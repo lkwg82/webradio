@@ -44,8 +44,13 @@ class Player extends React.Component {
     super(props);
     this.state = {
       streamUrl: '',
-      activeRadio: '',
+      // eslint-disable-next-line no-undef
+      activeRadio: localStorage.getItem("activeRadio"),
     };
+  }
+
+  componentDidMount() {
+    this.handleClick(this.state.activeRadio);
   }
 
   render() {
@@ -73,6 +78,8 @@ class Player extends React.Component {
       streamUrl: radios[playRadio].url,
       activeRadio: playRadio,
     });
+    // eslint-disable-next-line no-undef
+    localStorage.setItem("activeRadio", playRadio);
   }
 }
 
