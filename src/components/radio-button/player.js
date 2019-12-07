@@ -36,21 +36,13 @@ function Radio({ name, active, onClick }) {
   let className = 'btn btn-lg btn-block ';
   className += active ? 'btn-primary' : 'btn-secondary';
 
-  return (<figure>
-    <Button
-      type="button"
-      className={className}
-      onClick={() => onClick(config.url, name)}
-    />
-  </figure>
-  );
+  return (<Button type="button" className={className} onClick={() => onClick(name)} />);
 }
 
 class Player extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      radios: Object.keys(radios),
       streamUrl: '',
       activeRadio: '',
     };
@@ -60,23 +52,25 @@ class Player extends React.Component {
     const radioElements = this.generateRadioEntries();
     return (
       <div className="container">
-        {radioElements}
+        <figure>
+          {radioElements}
+        </figure>
         <audio controls src={this.state.streamUrl} autoPlay />
       </div>
     );
   }
 
   generateRadioEntries() {
-    return this.state.radios.map((name) => {
-      return <Radio key={name} name={name} active={this.state.activeRadio} onClick={(i, x) => this.handleClick(i, x)} />;
+    return Object.keys(radios).map((name) => {
+      return <Radio key={name} name={name} active={this.state.activeRadio} onClick={(i) => this.handleClick(i)} />;
     });
   }
 
-  handleClick(streamUrl, playRadio) {
+  handleClick(playRadio) {
     // eslint-disable-next-line no-undef
-    console.debug("play " + playRadio + " " + streamUrl);
+    console.debug("play " + playRadio);
     this.setState({
-      streamUrl: streamUrl,
+      streamUrl: radios[playRadio].url,
       activeRadio: playRadio,
     });
   }
