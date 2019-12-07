@@ -74,8 +74,9 @@ class Player extends React.Component {
   handleClick(playRadio) {
     // eslint-disable-next-line no-undef
     console.debug("play " + playRadio);
+    const url = hasOwnProperty.call(radios, playRadio) ? radios[playRadio].url : '';
     this.setState({
-      streamUrl: radios[playRadio].url,
+      streamUrl: url,
       activeRadio: playRadio,
     });
     // eslint-disable-next-line no-undef
