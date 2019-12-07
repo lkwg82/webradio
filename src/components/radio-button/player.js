@@ -1,4 +1,5 @@
 import React from 'react';
+import ReactPlayer from 'react-audio-player';
 import styled from 'styled-components';
 
 const radios = {
@@ -16,6 +17,24 @@ const radios = {
   },
 };
 
+const Hint = styled.div`
+  font-size: 20px;
+  position: fixed;
+  width: 100%;
+  background-color: red;
+  left: 0;
+  bottom: 0;
+`;
+
+function AutoplayHint({ show }) {
+  if (show) {
+    return <Hint>
+      can not autplay, see&nbsp;
+    <a href="https://developers.google.com/web/updates/2017/09/autoplay-policy-changes##new-behaviors" target="new-window">explanation</a>
+    </Hint >;
+  }
+  return "";
+}
 
 function Radio({ name, active: activeRadio, onClick }) {
   const config = radios[name];
@@ -46,11 +65,22 @@ class Player extends React.Component {
       streamUrl: '',
       // eslint-disable-next-line no-undef
       activeRadio: localStorage.getItem("activeRadio"),
+      showHintAutoplayPrevented: false,
     };
   }
 
   componentDidMount() {
     this.handleClick(this.state.activeRadio);
+
+    const audio = this.rap.audioEl;
+    const promise = audio.play();
+    if (promise !== undefined) {
+      promise.then(() => {
+        // autoplay started
+      }).catch(() => {
+        this.setState({ showHintAutoplayPrevented: true });
+      });
+    }
   }
 
   render() {
@@ -60,7 +90,16 @@ class Player extends React.Component {
         <figure>
           {radioElements}
         </figure>
-        <audio controls src={this.state.streamUrl} autoPlay />
+        <ReactPlayer
+          src={this.state.streamUrl}
+          ref={(element) => { this.rap = element; }}
+          autoPlay
+          controls
+          onError={(e) => console.debug("error" + e)}
+          onPlay={() => console.debug("play")}
+          onPause={() => console.debug("paused")}
+        />
+        <AutoplayHint show={this.state.showHintAutoplayPrevented} />
       </div>
     );
   }
