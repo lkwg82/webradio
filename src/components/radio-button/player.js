@@ -1,5 +1,5 @@
 import React from 'react';
-
+import styled from 'styled-components';
 
 const radios = {
   '104.6rtl': {
@@ -14,21 +14,34 @@ const radios = {
     'logo': 'logo_radioeins.png',
     'url': 'http://radioeins.de/stream',
   },
-}
+};
 
-function Radio(props) {
-  const config = radios[props.name];
+
+function Radio({ name, active, onClick }) {
+  const config = radios[name];
+  // eslint-disable-next-line no-undef
   const imageName = require('./' + config.logo);
+  const Button = styled.button`
+  background-image: url(${imageName});
+  background-repeat: no-repeat; 
+  background-position: center;
+  background-color: beige;
+  border-color: aliceblue;
+  
+  color: #0f0;
+  height: 80px;
+  padding-bottom: 2px;
+  `;
+
+  let className = 'btn btn-lg btn-block ';
+  className += active ? 'btn-primary' : 'btn-secondary';
 
   return (<figure>
-    <button
+    <Button
       type="button"
-      className="btn btn-light btn-lg btn-block"
-      onClick={() => props.onClick(config.url)}
-    >
-
-      <img src={imageName} alt="" />
-    </button>
+      className={className}
+      onClick={() => onClick(config.url, name)}
+    />
   </figure>
   );
 }
@@ -37,27 +50,36 @@ class Player extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      radios: Array(2).fill(null),
-      streamUrl: ""
+      radios: Object.keys(radios),
+      streamUrl: '',
+      activeRadio: '',
     };
   }
 
-  handleClick(streamUrl) {
-    console.debug("play " + streamUrl);
-    this.setState({
-      streamUrl: streamUrl,
-    });
-  }
-
   render() {
+    const radioElements = this.generateRadioEntries();
     return (
       <div className="container">
-        <Radio name='radioeins' onClick={i => this.handleClick(i)} />
-        <Radio name='104.6rtl' onClick={i => this.handleClick(i)} />
-        <audio controls src={this.state.streamUrl} autoPlay/>
+        {radioElements}
+        <audio controls src={this.state.streamUrl} autoPlay />
       </div>
     );
   }
+
+  generateRadioEntries() {
+    return this.state.radios.map((name) => {
+      return <Radio key={name} name={name} active={this.state.activeRadio} onClick={(i, x) => this.handleClick(i, x)} />;
+    });
+  }
+
+  handleClick(streamUrl, playRadio) {
+    // eslint-disable-next-line no-undef
+    console.debug("play " + playRadio + " " + streamUrl);
+    this.setState({
+      streamUrl: streamUrl,
+      activeRadio: playRadio,
+    });
+  }
 }
 
-export default Player
+export default Player;
