@@ -1,5 +1,7 @@
 import React from 'react';
 import ReactPlayer from 'react-audio-player';
+import Spinner from 'react-bootstrap/Spinner';
+import Alert from 'react-bootstrap/Alert';
 import styled from 'styled-components';
 
 const radios = {
@@ -17,23 +19,55 @@ const radios = {
   },
 };
 
-const Hint = styled.div`
-  font-size: 20px;
-  position: fixed;
-  width: 100%;
-  background-color: red;
-  left: 0;
-  bottom: 0;
-`;
-
 function AutoplayHint({ show }) {
   if (show) {
+    const Hint = styled.div`
+      font-size: 20px;
+      position: fixed;
+      width: 100%;
+      background-color: red;
+      left: 0;
+      bottom: 0;
+    `;
     return <Hint>
       can not autplay, see&nbsp;
     <a href="https://developers.google.com/web/updates/2017/09/autoplay-policy-changes##new-behaviors" target="new-window">explanation</a>
     </Hint >;
   }
   return "";
+}
+
+class OfflineHint extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      'offline': false
+    };
+  }
+
+  componentDidMount() {
+    // eslint-disable-next-line no-undef
+    window.onoffline = () => this.setState({ offline: true });
+    // eslint-disable-next-line no-undef
+    window.ononline = () => this.setState({ offline: false });
+  }
+
+  render() {
+    if (this.state.offline) {
+      const Hint = styled(Alert)`
+      font-size: 20px;
+      position: fixed;
+      width: 50%;
+      left: 25%;
+      bottom: 5%;
+     `;
+      return <Hint variant="info">
+        <Spinner animation="border" role="status" />
+        &nbsp;currently offline
+    </Hint>;
+    }
+    return "";
+  }
 }
 
 function Radio({ name, active: activeRadio, onClick }) {
@@ -99,6 +133,7 @@ class Player extends React.Component {
           onPlay={() => console.debug("play")}
           onPause={() => console.debug("paused")}
         />
+        <OfflineHint />
         <AutoplayHint show={this.state.showHintAutoplayPrevented} />
       </div>
     );
