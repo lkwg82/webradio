@@ -1,6 +1,7 @@
 import React from 'react';
 import ReactPlayer from 'react-audio-player';
 import Spinner from 'react-bootstrap/Spinner';
+import Button from 'react-bootstrap/Button';
 import Alert from 'react-bootstrap/Alert';
 import styled from 'styled-components';
 
@@ -12,6 +13,11 @@ const radios = {
   '104.6rtl-christmas': {
     'logo': 'logo_1046rtl.png',
     'url': 'https://sec-rtlberlin.hoerradar.de/rtlberlin-event01-mp3-192',
+    'hint': 'Weihnachtsradio'
+  },
+  'cosmo': {
+    'logo': 'logo_cosmo.svg',
+    'url': 'http://wdr-edge-200e.dus-lg.cdn.addradio.net/wdr/cosmo/live/mp3/128/stream.mp3?ar-distributor=f0a0',
   },
   'radioeins': {
     'logo': 'logo_radioeins.png',
@@ -74,8 +80,9 @@ function Radio({ name, active: activeRadio, onClick }) {
   const config = radios[name];
   // eslint-disable-next-line no-undef
   const imageName = require('./' + config.logo);
+  const hint = config["hint"];
 
-  const Button = styled.button`
+  const Button2 = styled(Button)`
         background-image: url(${imageName});
         background-repeat: no-repeat; 
         background-position: center;
@@ -84,12 +91,21 @@ function Radio({ name, active: activeRadio, onClick }) {
         color: #0f0;
         height: 80px;
         padding-bottom: 2px;
+
+        font-size: 20px;
+        font-weight: 600;
+        text-align: right;
+        color: black;
   `;
 
-  let className = 'btn btn-lg btn-block ';
-  className += activeRadio === name ? 'btn-primary' : 'btn-secondary';
+  const variant = activeRadio === name ? 'primary' : 'secondary';
 
-  return (<Button type="button" className={className} onClick={() => onClick(name)} />);
+  return <Button2
+    block
+    variant={variant}
+    onClick={() => onClick(name)}>
+    {(hint !== undefined) ? hint : ''}
+  </Button2>;
 }
 
 class Player extends React.Component {
