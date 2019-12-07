@@ -17,24 +17,24 @@ const radios = {
 };
 
 
-function Radio({ name, active, onClick }) {
+function Radio({ name, active: activeRadio, onClick }) {
   const config = radios[name];
   // eslint-disable-next-line no-undef
   const imageName = require('./' + config.logo);
+
   const Button = styled.button`
-  background-image: url(${imageName});
-  background-repeat: no-repeat; 
-  background-position: center;
-  background-color: beige;
-  border-color: aliceblue;
-  
-  color: #0f0;
-  height: 80px;
-  padding-bottom: 2px;
+        background-image: url(${imageName});
+        background-repeat: no-repeat; 
+        background-position: center;
+        border-color: aliceblue;
+        
+        color: #0f0;
+        height: 80px;
+        padding-bottom: 2px;
   `;
 
   let className = 'btn btn-lg btn-block ';
-  className += active ? 'btn-primary' : 'btn-secondary';
+  className += activeRadio === name ? 'btn-primary' : 'btn-secondary';
 
   return (<Button type="button" className={className} onClick={() => onClick(name)} />);
 }
