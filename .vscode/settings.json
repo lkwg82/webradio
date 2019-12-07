@@ -1,0 +1,7 @@
+{
+    "files.autoSave": "onWindowChange",
+
+    "eslint.autoFixOnSave": true,
+    "eslint.alwaysShowStatus": true,
+    "editor.formatOnSave": true
+}
