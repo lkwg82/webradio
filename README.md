@@ -1,5 +1,7 @@
 # development
 
+`yarn install`
+
 `yarn start`
 
 # deployment
