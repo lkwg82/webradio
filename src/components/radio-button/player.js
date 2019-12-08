@@ -36,7 +36,7 @@ function AutoplayHint({ show }) {
       bottom: 0;
     `;
     return <Hint>
-      can not autplay, see&nbsp;
+      can not autoplay, see&nbsp;
     <a href="https://developers.google.com/web/updates/2017/09/autoplay-policy-changes##new-behaviors" target="new-window">explanation</a>
     </Hint >;
   }
