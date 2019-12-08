@@ -25,24 +25,6 @@ const radios = {
   },
 };
 
-function AutoplayHint({ show }) {
-  if (show) {
-    const Hint = styled.div`
-      font-size: 20px;
-      position: fixed;
-      width: 100%;
-      background-color: red;
-      left: 0;
-      bottom: 0;
-    `;
-    return <Hint>
-      can not autoplay, see&nbsp;
-    <a href="https://developers.google.com/web/updates/2017/09/autoplay-policy-changes##new-behaviors" target="new-window">explanation</a>
-    </Hint >;
-  }
-  return "";
-}
-
 class OfflineHint extends React.Component {
   constructor(props) {
     super(props);
@@ -114,23 +96,12 @@ class Player extends React.Component {
     this.state = {
       streamUrl: '',
       // eslint-disable-next-line no-undef
-      activeRadio: localStorage.getItem("activeRadio"),
-      showHintAutoplayPrevented: false,
+      activeRadio: localStorage.getItem("activeRadio")
     };
   }
 
   componentDidMount() {
     this.handleClick(this.state.activeRadio);
-
-    const audio = this.rap.audioEl;
-    const promise = audio.play();
-    if (promise !== undefined) {
-      promise.then(() => {
-        // autoplay started
-      }).catch(() => {
-        this.setState({ showHintAutoplayPrevented: true });
-      });
-    }
   }
 
   render() {
@@ -150,7 +121,6 @@ class Player extends React.Component {
           onPause={() => console.debug("paused")}
         />
         <OfflineHint />
-        <AutoplayHint show={this.state.showHintAutoplayPrevented} />
       </div>
     );
   }
