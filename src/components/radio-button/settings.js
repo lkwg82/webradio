@@ -8,4 +8,13 @@ export class Settings {
     saveActiveRadioId(activeRadioId) {
         localStorage.setItem("activeRadioId", activeRadioId);
     }
+
+    getFavorites() {
+        const value = localStorage.getItem("favorites");
+        return value.split(",").map(e => Number.parseInt(e));
+    }
+
+    saveFavorites(ids) {
+        localStorage.setItem("favorites", ids);
+    }
 }

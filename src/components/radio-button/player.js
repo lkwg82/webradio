@@ -130,13 +130,14 @@ class Player extends React.Component {
 
   generateRadioEntries() {
     console.debug(this.state);
+    const ids = Object.values(radios).map(v => v.id);
+    this.settings.saveFavorites(ids);
 
-    return Object.entries(radios).map((entry) => {
-      const value = entry[1];
+    return this.settings.getFavorites().map(id => {
       return <Radio
-        key={value.id}
-        stationId={value.id}
-        active={value.id === Number.parseInt(this.state.activeRadioId)}
+        key={id}
+        stationId={id}
+        active={id === Number.parseInt(this.state.activeRadioId)}
         informationService={this.informationService}
         onClick={(i, j) => this.handleClick(i, j)} />;
     });
