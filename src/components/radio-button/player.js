@@ -82,12 +82,7 @@ function Radio({ name, active: activeRadio, onClick }) {
 
   const variant = activeRadio === name ? 'primary' : 'secondary';
 
-  return <RadioButton
-    block
-    variant={variant}
-    onClick={() => onClick(name)}>
-    {(hint !== undefined) ? hint : ''}
-  </RadioButton>;
+  return <RadioButton block variant={variant} onClick={() => onClick(name)}>{(hint !== undefined) ? hint : ''}</RadioButton>;
 }
 
 class Player extends React.Component {
