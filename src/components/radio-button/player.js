@@ -136,7 +136,7 @@ class Player extends React.Component {
       return <Radio
         key={value.id}
         stationId={value.id}
-        active={value.id == this.state.activeRadioId}
+        active={value.id === Number.parseInt(this.state.activeRadioId)}
         informationService={this.informationService}
         onClick={(i, j) => this.handleClick(i, j)} />;
     });
