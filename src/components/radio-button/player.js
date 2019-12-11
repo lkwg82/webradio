@@ -1,60 +1,9 @@
 import React from 'react';
 import ReactPlayer from 'react-audio-player';
-import Button from 'react-bootstrap/Button';
-import styled from 'styled-components';
-import { Settings } from './settings.js';
+import { Settings } from './settings';
 import { OfflineHint } from './offline-hint';
+import { Favorites } from './favorites';
 
-class Radio extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      'logo': '',
-      'name': '',
-      'url': ''
-    };
-  }
-
-  componentDidMount() {
-    const { stationId, informationService } = this.props;
-    informationService.stationInfo(stationId)
-      .then(result => {
-        console.debug(result);
-        this.setState({
-          'logo': result.logo,
-          'name': result.name,
-          'url': result.url,
-        });
-      });
-  }
-
-  render() {
-    const RadioButton = styled(Button)`
-      background-image: url(${this.state.logo});
-      background-size: contain;
-      background-repeat: no-repeat; 
-      border-color: aliceblue;
-      
-      color: #0f0;
-      height: 80px;
-      padding-bottom: 2px;
-      
-      font-size: 20px;
-      font-weight: 600;
-      text-align: right;
-      color: black;
-    `;
-
-    const { active, stationId, onClick } = this.props;
-
-    return <RadioButton
-      block
-      variant={active ? 'primary' : 'secondary'}
-      onClick={() => onClick(this.state.url, stationId)}>
-      {this.state.name}
-    </RadioButton>;
-  }
-}
 
 class InformationService {
   constructor() {
@@ -81,15 +30,8 @@ class Player extends React.Component {
     this.settings = new Settings();
     this.informationService = new InformationService();
     this.state = {
-      streamUrl: '',
-      activeRadioId: this.settings.getActiveRadioId(),
+      streamUrl: ''
     };
-  }
-
-  componentDidMount() {
-    const stationId = this.state.activeRadioId;
-    this.informationService.stationInfo(stationId)
-      .then(result => this.handleClick(result.url, stationId));
   }
 
   render() {
@@ -98,8 +40,7 @@ class Player extends React.Component {
         <Favorites
           settings={this.settings}
           informationService={this.informationService}
-          click={(i, j) => this.handleClick(i, j)}
-          active={this.state.activeRadioId} />
+          click={(i, j) => this.handleClick(i, j)} />
         <ReactPlayer
           src={this.state.streamUrl}
           ref={(element) => { this.rap = element; }}
@@ -125,39 +66,5 @@ class Player extends React.Component {
   }
 }
 
-class Favorites extends React.Component {
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      favorites: [],
-    };
-  }
-
-  componentDidMount() {
-    const ids = this.props.settings.getFavorites();
-    this.setState({ favorites: ids });
-  }
-
-  handleClick(url, stationId) {
-    let newFavorites = [stationId];
-    this.state.favorites.filter(id => id !== stationId).map(id => newFavorites.push(id));
-    console.debug(newFavorites);
-    this.setState({ favorites: newFavorites });
-    this.props.click(url, stationId);
-  }
-
-  render() {
-    const radioElements = this.state.favorites.map(id => {
-      return <Radio
-        key={id}
-        stationId={id}
-        active={id === Number.parseInt(this.props.active)}
-        informationService={this.props.informationService}
-        onClick={(i, j) => this.handleClick(i, j)} />;
-    });
-    return (<figure>{radioElements}</figure>);
-  }
-}
 
 export default Player;

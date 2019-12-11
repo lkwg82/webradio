@@ -2,7 +2,8 @@
 export class Settings {
 
     getActiveRadioId() {
-        return localStorage.getItem("activeRadioId") || -1;
+        const value = localStorage.getItem("activeRadioId");
+        return Number.parseInt(value) || -1;
     }
 
     saveActiveRadioId(activeRadioId) {
