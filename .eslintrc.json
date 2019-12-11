@@ -10,5 +10,8 @@
     "rules": {
         "semi": "error",
         "react/prop-types": "off"
+    },
+    "env": {
+        "browser": true
     }
 }
