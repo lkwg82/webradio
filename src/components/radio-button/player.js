@@ -7,35 +7,50 @@ import { OfflineHint } from './offline-hint';
 
 const radios = {
   '104.6rtl': {
-    'logo': 'logo_1046rtl.png',
-    'url': 'https://sec-rtlberlin.hoerradar.de/rtlberlin-live-mp3-192',
+    'id': 9013
   },
   '104.6rtl-christmas': {
-    'logo': 'logo_1046rtl.png',
-    'url': 'https://sec-rtlberlin.hoerradar.de/rtlberlin-event01-mp3-192',
-    'hint': 'Weihnachtsradio'
+    'id': 9437
   },
   'cosmo': {
-    'logo': 'logo_cosmo.svg',
-    'url': 'http://wdr-edge-200e.dus-lg.cdn.addradio.net/wdr/cosmo/live/mp3/128/stream.mp3?ar-distributor=f0a0',
+    'id': 2459
   },
   'radioeins': {
-    'logo': 'logo_radioeins.png',
-    'url': 'http://radioeins.de/stream',
+    'id': 2261
   },
 };
 
+class Radio extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      'logo': '',
+      'name': '',
+      'url': ''
+    };
+  }
 
-function Radio({ name, active: activeRadio, onClick }) {
-  const config = radios[name];
-  // eslint-disable-next-line no-undef
-  const imageName = require('./' + config.logo);
-  const hint = config["hint"];
+  componentDidMount() {
+    const { stationId, informationService } = this.props;
+    informationService.stationInfo(stationId)
+      .then(response => response.json())
+      .then(json => {
+        console.debug(json);
+        this.setState({
+          'logo': json['logo300x300'],
+          'name': json.name,
+          'url': json.streamUrls.slice(0, 1)[0].streamUrl,
+        });
+      });
+  }
 
-  const RadioButton = styled(Button)`
-        background-image: url(${imageName});
+  render() {
+    const { active, stationId, onClick } = this.props;
+
+    const RadioButton = styled(Button)`
+        background-image: url(${this.state.logo});
+        background-size: contain;
         background-repeat: no-repeat; 
-        background-position: center;
         border-color: aliceblue;
         
         color: #0f0;
@@ -48,24 +63,39 @@ function Radio({ name, active: activeRadio, onClick }) {
         color: black;
   `;
 
-  const variant = activeRadio === name ? 'primary' : 'secondary';
+    return <RadioButton
+      block
+      variant={active ? 'primary' : 'secondary'}
+      onClick={() => onClick(this.state.url, stationId)}>
+      {this.state.name}
+    </RadioButton>;
+  }
+}
 
-  return <RadioButton block variant={variant} onClick={() => onClick(name)}>{(hint !== undefined) ? hint : ''}</RadioButton>;
+class InformationService {
+  constructor() {
+    this.baseUrl = 'https://api-webradio.lgohlke.de/';
+  }
+
+  stationInfo(stationId) {
+    const url = this.baseUrl + 'stationInfo?stationId=' + stationId;
+    return fetch(url);
+  }
 }
 
 class Player extends React.Component {
   constructor(props) {
     super(props);
     this.settings = new Settings();
+    this.informationService = new InformationService();
     this.state = {
       streamUrl: '',
-      // eslint-disable-next-line no-undef
-      activeRadio: this.settings.getActiveRadio()
+      activeRadioId: this.settings.getActiveRadioId(),
     };
   }
 
   componentDidMount() {
-    this.handleClick(this.state.activeRadio);
+    // this.handleClick(this.state.activeRadioId);
   }
 
   render() {
@@ -80,7 +110,7 @@ class Player extends React.Component {
           ref={(element) => { this.rap = element; }}
           autoPlay
           controls
-          onError={(e) => console.debug("error" + e)}
+          onError={(e) => console.debug("error:" + JSON.stringify(e))}
           onPlay={() => console.debug("play")}
           onPause={() => console.debug("paused")}
         />
@@ -90,20 +120,27 @@ class Player extends React.Component {
   }
 
   generateRadioEntries() {
-    return Object.keys(radios).map((name) => {
-      return <Radio key={name} name={name} active={this.state.activeRadio} onClick={(i) => this.handleClick(i)} />;
+    console.debug(this.state);
+
+    return Object.entries(radios).map((entry) => {
+      const value = entry[1];
+      return <Radio
+        key={value.id}
+        stationId={value.id}
+        active={value.id == this.state.activeRadioId}
+        informationService={this.informationService}
+        onClick={(i, j) => this.handleClick(i, j)} />;
     });
   }
 
-  handleClick(playRadio) {
-    // eslint-disable-next-line no-undef
-    console.debug("play " + playRadio);
-    const url = hasOwnProperty.call(radios, playRadio) ? radios[playRadio].url : '';
+  handleClick(url, playRadioId) {
+    console.debug("play " + url);
+    console.debug("play " + playRadioId);
     this.setState({
       streamUrl: url,
-      activeRadio: playRadio,
+      activeRadioId: playRadioId,
     });
-    this.settings.saveActiveRadio(playRadio);
+    this.settings.saveActiveRadioId(playRadioId);
   }
 }
 

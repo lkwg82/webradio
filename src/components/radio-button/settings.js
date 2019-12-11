@@ -1,11 +1,11 @@
 
 export class Settings {
-    getActiveRadio() {
-        // eslint-disable-next-line no-undef
-        return localStorage.getItem("activeRadio");
+
+    getActiveRadioId() {
+        return localStorage.getItem("activeRadioId") || -1;
     }
-    saveActiveRadio(activeRadio) {
-        // eslint-disable-next-line no-undef
-        localStorage.setItem("activeRadio", activeRadio);
+
+    saveActiveRadioId(activeRadioId) {
+        localStorage.setItem("activeRadioId", activeRadioId);
     }
 }
