@@ -10,7 +10,7 @@ export class Settings {
     }
 
     getFavorites() {
-        const value = localStorage.getItem("favorites");
+        const value = localStorage.getItem("favorites") || "9013,9437,2459,2261";
         return value.split(",").map(e => Number.parseInt(e));
     }
 

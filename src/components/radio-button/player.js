@@ -5,21 +5,6 @@ import styled from 'styled-components';
 import { Settings } from './settings.js';
 import { OfflineHint } from './offline-hint';
 
-const radios = {
-  '104.6rtl': {
-    'id': 9013
-  },
-  '104.6rtl-christmas': {
-    'id': 9437
-  },
-  'cosmo': {
-    'id': 2459
-  },
-  'radioeins': {
-    'id': 2261
-  },
-};
-
 class Radio extends React.Component {
   constructor(props) {
     super(props);
@@ -108,12 +93,13 @@ class Player extends React.Component {
   }
 
   render() {
-    const radioElements = this.generateRadioEntries();
     return (
       <div className="container">
-        <figure>
-          {radioElements}
-        </figure>
+        <Favorites
+          settings={this.settings}
+          informationService={this.informationService}
+          click={(i, j) => this.handleClick(i, j)}
+          active={this.state.activeRadioId} />
         <ReactPlayer
           src={this.state.streamUrl}
           ref={(element) => { this.rap = element; }}
@@ -128,21 +114,6 @@ class Player extends React.Component {
     );
   }
 
-  generateRadioEntries() {
-    console.debug(this.state);
-    const ids = Object.values(radios).map(v => v.id);
-    this.settings.saveFavorites(ids);
-
-    return this.settings.getFavorites().map(id => {
-      return <Radio
-        key={id}
-        stationId={id}
-        active={id === Number.parseInt(this.state.activeRadioId)}
-        informationService={this.informationService}
-        onClick={(i, j) => this.handleClick(i, j)} />;
-    });
-  }
-
   handleClick(url, playRadioId) {
     console.debug("play " + url);
     console.debug("play " + playRadioId);
@@ -151,6 +122,41 @@ class Player extends React.Component {
       activeRadioId: playRadioId,
     });
     this.settings.saveActiveRadioId(playRadioId);
+  }
+}
+
+class Favorites extends React.Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      favorites: [],
+    };
+  }
+
+  componentDidMount() {
+    const ids = this.props.settings.getFavorites();
+    this.setState({ favorites: ids });
+  }
+
+  handleClick(url, stationId) {
+    let newFavorites = [stationId];
+    this.state.favorites.filter(id => id !== stationId).map(id => newFavorites.push(id));
+    console.debug(newFavorites);
+    this.setState({ favorites: newFavorites });
+    this.props.click(url, stationId);
+  }
+
+  render() {
+    const radioElements = this.state.favorites.map(id => {
+      return <Radio
+        key={id}
+        stationId={id}
+        active={id === Number.parseInt(this.props.active)}
+        informationService={this.props.informationService}
+        onClick={(i, j) => this.handleClick(i, j)} />;
+    });
+    return (<figure>{radioElements}</figure>);
   }
 }
 
