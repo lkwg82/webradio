@@ -16,9 +16,10 @@ export class Favorites extends React.Component {
         const activeRadioId = this.settings.getActiveRadioId();
         const ids = this.settings.getFavorites();
 
-        this.informationService.stationInfo(activeRadioId)
-            .then(result => this.handleClick(result.url, activeRadioId));
-
+        if (activeRadioId > 0) {
+            this.informationService.stationInfo(activeRadioId)
+                .then(result => this.handleClick(result.url, activeRadioId));
+        }
         this.setState({
             favorites: ids,
             activeRadioId: activeRadioId
@@ -28,7 +29,6 @@ export class Favorites extends React.Component {
     handleClick(url, stationId) {
         let newFavorites = [stationId];
         this.state.favorites.filter(id => id !== stationId).map(id => newFavorites.push(id));
-        console.debug(newFavorites);
         this.settings.saveFavorites(newFavorites);
         this.setState({
             favorites: newFavorites,
@@ -38,7 +38,6 @@ export class Favorites extends React.Component {
     }
 
     render() {
-        console.debug(this.state);
         const radioElements = this.state.favorites.map(id => {
             return <StationButton
                 key={id}
