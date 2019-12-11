@@ -64,7 +64,7 @@ function Radio({ name, active: activeRadio, onClick }) {
   const imageName = require('./' + config.logo);
   const hint = config["hint"];
 
-  const Button2 = styled(Button)`
+  const RadioButton = styled(Button)`
         background-image: url(${imageName});
         background-repeat: no-repeat; 
         background-position: center;
@@ -82,12 +82,12 @@ function Radio({ name, active: activeRadio, onClick }) {
 
   const variant = activeRadio === name ? 'primary' : 'secondary';
 
-  return <Button2
+  return <RadioButton
     block
     variant={variant}
     onClick={() => onClick(name)}>
     {(hint !== undefined) ? hint : ''}
-  </Button2>;
+  </RadioButton>;
 }
 
 class Player extends React.Component {
