@@ -33,13 +33,12 @@ class Radio extends React.Component {
   componentDidMount() {
     const { stationId, informationService } = this.props;
     informationService.stationInfo(stationId)
-      .then(response => response.json())
-      .then(json => {
-        console.debug(json);
+      .then(result => {
+        console.debug(result);
         this.setState({
-          'logo': json['logo300x300'],
-          'name': json.name,
-          'url': json.streamUrls.slice(0, 1)[0].streamUrl,
+          'logo': result.logo,
+          'name': result.name,
+          'url': result.url,
         });
       });
   }
@@ -60,7 +59,7 @@ class Radio extends React.Component {
       text-align: right;
       color: black;
     `;
-    
+
     const { active, stationId, onClick } = this.props;
 
     return <RadioButton
@@ -79,7 +78,15 @@ class InformationService {
 
   stationInfo(stationId) {
     const url = this.baseUrl + 'stationInfo?stationId=' + stationId;
-    return fetch(url);
+    return fetch(url)
+      .then(response => response.json())
+      .then(json => {
+        return {
+          'logo': json['logo300x300'],
+          'name': json.name,
+          'url': json.streamUrls.slice(0, 1)[0].streamUrl
+        };
+      });
   }
 }
 
@@ -95,7 +102,9 @@ class Player extends React.Component {
   }
 
   componentDidMount() {
-    // this.handleClick(this.state.activeRadioId);
+    const stationId = this.state.activeRadioId;
+    this.informationService.stationInfo(stationId)
+      .then(result => this.handleClick(result.url, stationId));
   }
 
   render() {
