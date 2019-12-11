@@ -1,9 +1,9 @@
 import React from 'react';
 import ReactPlayer from 'react-audio-player';
-import Spinner from 'react-bootstrap/Spinner';
 import Button from 'react-bootstrap/Button';
-import Alert from 'react-bootstrap/Alert';
 import styled from 'styled-components';
+import { Settings } from './settings.js';
+import { OfflineHint } from './offline-hint';
 
 const radios = {
   '104.6rtl': {
@@ -25,38 +25,6 @@ const radios = {
   },
 };
 
-class OfflineHint extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      'offline': false
-    };
-  }
-
-  componentDidMount() {
-    // eslint-disable-next-line no-undef
-    window.onoffline = () => this.setState({ offline: true });
-    // eslint-disable-next-line no-undef
-    window.ononline = () => this.setState({ offline: false });
-  }
-
-  render() {
-    if (this.state.offline) {
-      const Hint = styled(Alert)`
-      font-size: 20px;
-      position: fixed;
-      width: 50%;
-      left: 25%;
-      bottom: 5%;
-     `;
-      return <Hint variant="info">
-        <Spinner animation="border" role="status" />
-        &nbsp;currently offline
-    </Hint>;
-    }
-    return "";
-  }
-}
 
 function Radio({ name, active: activeRadio, onClick }) {
   const config = radios[name];
@@ -83,17 +51,6 @@ function Radio({ name, active: activeRadio, onClick }) {
   const variant = activeRadio === name ? 'primary' : 'secondary';
 
   return <RadioButton block variant={variant} onClick={() => onClick(name)}>{(hint !== undefined) ? hint : ''}</RadioButton>;
-}
-
-class Settings {
-  getActiveRadio() {
-    // eslint-disable-next-line no-undef
-    return localStorage.getItem("activeRadio");
-  }
-  saveActiveRadio(activeRadio) {
-    // eslint-disable-next-line no-undef
-    localStorage.setItem("activeRadio", activeRadio);
-  }
 }
 
 class Player extends React.Component {
