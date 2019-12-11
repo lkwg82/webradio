@@ -85,13 +85,25 @@ function Radio({ name, active: activeRadio, onClick }) {
   return <RadioButton block variant={variant} onClick={() => onClick(name)}>{(hint !== undefined) ? hint : ''}</RadioButton>;
 }
 
+class Settings {
+  getActiveRadio() {
+    // eslint-disable-next-line no-undef
+    return localStorage.getItem("activeRadio");
+  }
+  saveActiveRadio(activeRadio) {
+    // eslint-disable-next-line no-undef
+    localStorage.setItem("activeRadio", activeRadio);
+  }
+}
+
 class Player extends React.Component {
   constructor(props) {
     super(props);
+    this.settings = new Settings();
     this.state = {
       streamUrl: '',
       // eslint-disable-next-line no-undef
-      activeRadio: localStorage.getItem("activeRadio")
+      activeRadio: this.settings.getActiveRadio()
     };
   }
 
@@ -134,8 +146,7 @@ class Player extends React.Component {
       streamUrl: url,
       activeRadio: playRadio,
     });
-    // eslint-disable-next-line no-undef
-    localStorage.setItem("activeRadio", playRadio);
+    this.settings.saveActiveRadio(playRadio);
   }
 }
 
