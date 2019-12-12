@@ -11,6 +11,7 @@ import { OfflineReconnector } from './offline-reconnector';
 import styled from 'styled-components';
 import Keyboard from 'react-simple-keyboard';
 import 'react-simple-keyboard/build/css/index.css';
+import { StationButton } from './station-button';
 
 
 function SearchPanelToggleButton({ toggle }) {
@@ -37,9 +38,8 @@ class SearchPanel extends React.Component {
   }
 
   componentDidMount() {
-    // this.state.input = 'rs2';
-
-    // setInterval(() => this.onKeyPress('r'), 500);
+    this.state.input = 'rs';
+    setTimeout(() => this.onKeyPress('2'), 500);
   }
 
   onKeyPress(button) {
@@ -47,13 +47,33 @@ class SearchPanel extends React.Component {
     const input = this.state.input;
     if (button === 'DEL') {
       this.setState({ input: input.substring(0, input.length - 1) });
-    } else {
-      this.setState({ input: input + button });
+    }
+    else {
+      if (button === '___') {
+        this.onKeyPress(' ');
+      } else {
+        this.setState({ input: input + button });
+      }
     }
 
     if (this.state.input.length > 2) {
       console.log("search for " + this.state.input);
-      this.informationService.stationQuery(input);
+      this.informationService.stationQuery(input)
+        .then(results => {
+          console.log(results);
+
+          const buttons = results.slice(0, 6).map(result => {
+            const key = 'result_' + result.id;
+            console.log(result);
+            return <StationButton
+              informationService={this.informationService}
+              key={key}
+              active={false}
+              stationId={result.id}
+              onClick={() => console.log(result.id)} />;
+          });
+          this.setState({ results: buttons });
+        });
     }
     else {
       console.log(this.state.input.length);
@@ -74,10 +94,15 @@ class SearchPanel extends React.Component {
 
     const Results = styled.div`
       height: 50vh;
+      display: grid;
+      grid-template-columns: 40vW 40vW;
+      grid-gap: 10px;
+      align-items: center;
+      justify-content: center;
     `;
     return <SearchContainer>
       <Results>
-        {this.state.hasResults ? this.state.results : 'no result'}
+        {this.state.results ? this.state.results : 'no result'}
       </Results>
       <StyledKeyboard>
         <InputGroup className="sm-1">
@@ -94,7 +119,7 @@ class SearchPanel extends React.Component {
               '0 1 2 3 4 5 6 7 8 9 DEL',
               'q w e r t z u i o p',
               'a s d f g h j k l',
-              'y x c v b n m ö ä ü',
+              'y x c v b n m ö ä ü ___',
             ],
           }}
         />
@@ -113,7 +138,7 @@ class Player extends React.Component {
     this.offlineReconnector = new OfflineReconnector();
 
     this.state = {
-      showRadioPanel: true,
+      showRadioPanel: false,
       streamUrl: ''
     };
   }
@@ -125,7 +150,7 @@ class Player extends React.Component {
   render() {
     const toggle = this.toggle.bind(this);
     return (
-      <div>
+      <div className="all-container">
         {
           this.state.showRadioPanel ?
             <RadioPanel>

@@ -29,14 +29,17 @@ export class InformationService {
         return fetch(url)
             .then(response => response.json())
             .then(json => {
-                return json.map(item => {
-                    console.log(item);
-                    return {
-                        'logo': item['logo300x300'],
-                        'name': item.name,
-                        'url': item.station.streamUrls.slice(0, 1)[0].streamUrl
-                    };
-                });
+                return json
+                    .filter(item => item.station.streamUrls.length > 0)
+                    .map(item => {
+                        console.log(item);
+                        return {
+                            'id': item.id,
+                            'logo': item.station['logo300x300'],
+                            'name': item.station.name,
+                            'url': item.station.streamUrls.slice(0, 1)[0].streamUrl
+                        };
+                    });
             });
     }
 }
