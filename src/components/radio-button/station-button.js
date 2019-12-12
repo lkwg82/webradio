@@ -42,7 +42,7 @@ export class StationButton extends React.Component {
             margin-top: 0 !important;
         `;
         const StationName = styled.div`
-            padding-left: 40px;
+            padding-left: 80px;
         `;
 
         const { active, stationId, onClick } = this.props;
