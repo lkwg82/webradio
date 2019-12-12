@@ -1,4 +1,3 @@
-
 export class InformationService {
     constructor() {
         this.baseUrl = 'https://api-webradio.lgohlke.de/';
