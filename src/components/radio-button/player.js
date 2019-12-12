@@ -124,7 +124,7 @@ class SearchPanel extends React.Component {
         <Keyboard
           useButtonTag={true}
           useMouseEvents={true}
-          autoUseTouchEvents={true}
+          useTouchEvents={false}
           onKeyPress={button => this.onKeyPress(button)}
           maxLength={10}
           layout={{
@@ -151,7 +151,7 @@ class Player extends React.Component {
     this.offlineReconnector = new OfflineReconnector();
 
     this.state = {
-      showRadioPanel: true,
+      showRadioPanel: false,
       streamUrl: ''
     };
   }
