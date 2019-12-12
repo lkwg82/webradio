@@ -27,20 +27,19 @@ export class StationButton extends React.Component {
 
     render() {
         const RadioButton = styled(Button)`
-        background-image: url(${this.state.logo});
-        background-size: contain;
-        background-repeat: no-repeat; 
-        border-color: aliceblue;
-        
-        color: #0f0;
-        height: 80px;
-        padding-bottom: 2px;
-        
-        font-size: 20px;
-        font-weight: 600;
-        text-align: right;
-        color: black;
-      `;
+            background-image: url(${this.state.logo});
+            background-size: contain;
+            background-repeat: no-repeat; 
+            border-color: aliceblue;
+            color: #0f0;
+            height: 80px;
+            padding-bottom: 2px;
+            
+            font-size: 20px;
+            font-weight: 600;
+            text-align: right;
+            color: black;
+        `;
 
         const { active, stationId, onClick } = this.props;
 
