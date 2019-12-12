@@ -50,13 +50,14 @@ export class Favorites extends React.Component {
             grid-gap: 10px;
             margin:10px;
         `;
+        const handler = this.handleClick.bind(this);
         const radioElements = this.state.favorites.map(id => {
             return <StationButton
                 key={id}
                 stationId={id}
                 active={id === this.state.activeRadioId}
                 informationService={this.informationService}
-                onClick={(i, j) => this.handleClick(i, j)} />;
+                onClick={handler} />;
         });
         return (<Grid>{radioElements}</Grid>);
     }
