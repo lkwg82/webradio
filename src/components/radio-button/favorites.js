@@ -44,9 +44,10 @@ export class Favorites extends React.Component {
     }
 
     render() {
+        const width = 30;
         const Grid = styled.div`
             display: grid;
-            grid-template-columns: 46vW 46vW;
+            grid-template-columns: ${width}vW ${width}vW ${width}vW;
             grid-gap: 10px;
             margin:10px;
             align-items: center;

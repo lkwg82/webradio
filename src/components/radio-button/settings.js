@@ -20,7 +20,7 @@ export class Settings {
 
     addFavorite(stationId) {
         let newFavorites = [stationId];
-        this.getFavorites().slice(0, 9).map(i => newFavorites.push(i));
+        this.getFavorites().slice(0, 11).map(i => newFavorites.push(i));
         this.saveFavorites(newFavorites);
     }
 

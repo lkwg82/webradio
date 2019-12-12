@@ -46,15 +46,20 @@ class SearchPanel extends React.Component {
   onKeyPress(button) {
     console.log("Button pressed", button);
     const input = this.state.input;
-    if (button === 'DEL') {
-      this.setState({ input: input.substring(0, input.length - 1) });
-    }
-    else {
-      if (button === '___') {
-        this.onKeyPress(' ');
-      } else {
+
+    switch (button) {
+      case 'DEL':
+        this.setState({ input: input.substring(0, input.length - 1) });
+        break;
+      case 'ESC':
+        this.setState({ input: '' });
+        this.props.toggle();
+        break;
+      case '___':
+        this.setState({ input: input + ' ' });
+        break;
+      default:
         this.setState({ input: input + button });
-      }
     }
 
     if (this.state.input.length > 2) {
@@ -124,7 +129,7 @@ class SearchPanel extends React.Component {
           maxLength={10}
           layout={{
             'default': [
-              '0 1 2 3 4 5 6 7 8 9 DEL',
+              'ESC 0 1 2 3 4 5 6 7 8 9 DEL',
               'q w e r t z u i o p',
               'a s d f g h j k l',
               'y x c v b n m ö ä ü ___',
