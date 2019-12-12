@@ -4,7 +4,7 @@ export class Settings {
     getActiveRadioId() {
         const value = localStorage.getItem("activeRadioId");
         const parsed = Number.parseInt(value);
-        return parsed == 'NaN' ? -1 : parsed;
+        return parsed === 'NaN' ? -1 : parsed;
     }
 
     saveActiveRadioId(activeRadioId) {
