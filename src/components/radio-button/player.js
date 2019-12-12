@@ -3,26 +3,7 @@ import ReactPlayer from 'react-audio-player';
 import { Settings } from './settings';
 import { OfflineHint } from './offline-hint';
 import { Favorites } from './favorites';
-
-
-class InformationService {
-  constructor() {
-    this.baseUrl = 'https://api-webradio.lgohlke.de/';
-  }
-
-  stationInfo(stationId) {
-    const url = this.baseUrl + 'stationInfo?stationId=' + stationId;
-    return fetch(url)
-      .then(response => response.json())
-      .then(json => {
-        return {
-          'logo': json['logo300x300'],
-          'name': json.name,
-          'url': json.streamUrls.slice(0, 1)[0].streamUrl
-        };
-      });
-  }
-}
+import { InformationService } from './information-service';
 
 class Player extends React.Component {
   constructor(props) {
