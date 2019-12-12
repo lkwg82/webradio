@@ -29,18 +29,19 @@ function SearchPanelToggleButton({ toggle }) {
 }
 
 class SearchPanel extends React.Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
     this.informationService = new InformationService();
+    this.settings = props.settings;
     this.state = {
       input: '',
     };
   }
 
-  componentDidMount() {
-    this.state.input = 'rs';
-    setTimeout(() => this.onKeyPress('2'), 500);
-  }
+  // componentDidMount() {
+  //   this.state.input = 'rs';
+  //   setTimeout(() => this.onKeyPress('2'), 500);
+  // }
 
   onKeyPress(button) {
     console.log("Button pressed", button);
@@ -65,12 +66,19 @@ class SearchPanel extends React.Component {
           const buttons = results.slice(0, 6).map(result => {
             const key = 'result_' + result.id;
             console.log(result);
+            const handler = () => {
+              console.log(result.id);
+              this.settings.addFavorite(result.id);
+              this.settings.saveActiveRadioId(result.id);
+              this.props.toggle();
+            };
+
             return <StationButton
               informationService={this.informationService}
               key={key}
               active={false}
               stationId={result.id}
-              onClick={() => console.log(result.id)} />;
+              onClick={handler} />;
           });
           this.setState({ results: buttons });
         });
@@ -149,6 +157,7 @@ class Player extends React.Component {
 
   render() {
     const toggle = this.toggle.bind(this);
+    const clickHandler = this.handleClick.bind(this);
     return (
       <div className="all-container">
         {
@@ -157,7 +166,7 @@ class Player extends React.Component {
               <Favorites
                 settings={this.settings}
                 informationService={this.informationService}
-                click={(i) => this.handleClick(i)} />
+                click={clickHandler} />
               <ReactPlayer
                 src={this.state.streamUrl}
                 ref={(element) => { this.rap = element; }}
@@ -170,7 +179,7 @@ class Player extends React.Component {
               <SearchPanelToggleButton toggle={toggle} />
             </RadioPanel>
             :
-            <SearchPanel />
+            <SearchPanel settings={this.settings} toggle={toggle} />
         }
         <OfflineHint />
       </div>
