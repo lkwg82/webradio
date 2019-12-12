@@ -46,9 +46,11 @@ export class Favorites extends React.Component {
     render() {
         const Grid = styled.div`
             display: grid;
-            grid-template-columns: 40vW 40vW;
+            grid-template-columns: 46vW 46vW;
             grid-gap: 10px;
             margin:10px;
+            align-items: center;
+            justify-content: center;
         `;
         const handler = this.handleClick.bind(this);
         const radioElements = this.state.favorites.map(id => {

@@ -138,7 +138,7 @@ class Player extends React.Component {
     this.offlineReconnector = new OfflineReconnector();
 
     this.state = {
-      showRadioPanel: false,
+      showRadioPanel: true,
       streamUrl: ''
     };
   }
