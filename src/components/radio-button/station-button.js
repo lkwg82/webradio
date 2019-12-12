@@ -35,10 +35,10 @@ export class StationButton extends React.Component {
             height: 80px;
             padding-bottom: 2px;
             
-            font-size: 20px;
-            font-weight: 600;
+            font-size: 20px !important;
+            font-weight: 400 !important;
             text-align: right;
-            color: black;
+            color: white !important;
             margin-top: 0 !important;
         `;
         const StationName = styled.div`
@@ -50,7 +50,8 @@ export class StationButton extends React.Component {
             key={stationId}
             block
             variant={active ? 'primary' : 'secondary'}
-            onClick={() => onClick(this.state.url, stationId)}>
+            onClick={() => onClick(this.state.url, stationId)}
+            size="lg">
             <StationName>{this.state.name}</StationName>
         </RadioButton>;
     }
