@@ -39,15 +39,19 @@ export class StationButton extends React.Component {
             font-weight: 600;
             text-align: right;
             color: black;
+            margin-top: 0 !important;
+        `;
+        const StationName = styled.div`
+            padding-left: 40px;
         `;
 
         const { active, stationId, onClick } = this.props;
-
         return <RadioButton
+            key={stationId}
             block
             variant={active ? 'primary' : 'secondary'}
             onClick={() => onClick(this.state.url, stationId)}>
-            {this.state.name}
+            <StationName>{this.state.name}</StationName>
         </RadioButton>;
     }
 }

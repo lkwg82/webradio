@@ -1,5 +1,6 @@
 import React from 'react';
 import { StationButton } from './station-button';
+import styled from 'styled-components';
 
 export class Favorites extends React.Component {
     constructor(props) {
@@ -43,6 +44,12 @@ export class Favorites extends React.Component {
     }
 
     render() {
+        const Grid = styled.div`
+            display: grid;
+            grid-template-columns: 46vW 46vW;
+            grid-gap: 10px;
+            margin:10px;
+        `;
         const radioElements = this.state.favorites.map(id => {
             return <StationButton
                 key={id}
@@ -51,6 +58,6 @@ export class Favorites extends React.Component {
                 informationService={this.informationService}
                 onClick={(i, j) => this.handleClick(i, j)} />;
         });
-        return (<figure>{radioElements}</figure>);
+        return (<Grid>{radioElements}</Grid>);
     }
 }
