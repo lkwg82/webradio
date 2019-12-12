@@ -20,9 +20,7 @@ export class OfflineHint extends React.Component {
     }
 
     componentDidMount() {
-        // eslint-disable-next-line no-undef
         window.onoffline = () => this.setState({ offline: true });
-        // eslint-disable-next-line no-undef
         window.ononline = () => this.setState({ offline: false });
     }
 
