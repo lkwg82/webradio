@@ -27,16 +27,16 @@ export class Favorites extends React.Component {
     }
 
     handleClick(url, stationId) {
-        let newFavorites = [stationId];
-        this.state.favorites
-            .filter(id => id !== stationId)
-            .map(id => newFavorites.push(id));
+        // let newFavorites = [stationId];
+        // this.state.favorites
+        //     .filter(id => id !== stationId)
+        //     .map(id => newFavorites.push(id));
 
-        this.settings.saveFavorites(newFavorites);
+        this.settings.saveFavorites(this.state.favorites);
         this.settings.saveActiveRadioId(stationId);
 
         this.setState({
-            favorites: newFavorites,
+            // favorites: newFavorites,
             activeRadioId: stationId,
         });
         this.props.click(url);
