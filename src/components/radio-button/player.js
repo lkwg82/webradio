@@ -11,6 +11,7 @@ class Player extends React.Component {
     super(props);
     this.settings = new Settings();
     this.informationService = new InformationService();
+    this.offlineReconnector = new OfflineReconnector();
     this.state = {
       streamUrl: ''
     };
@@ -19,7 +20,6 @@ class Player extends React.Component {
   render() {
     return (
       <div className="container">
-        <OfflineReconnector handler={(i) => this.handleClick(i)} url={this.state.streamUrl} />
         <Favorites
           settings={this.settings}
           informationService={this.informationService}
