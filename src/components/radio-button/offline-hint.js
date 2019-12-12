@@ -20,8 +20,8 @@ export class OfflineHint extends React.Component {
     }
 
     componentDidMount() {
-        window.onoffline = () => this.setState({ offline: true });
-        window.ononline = () => this.setState({ offline: false });
+        window.addEventListener('offline', () => this.setState({ offline: true }));
+        window.addEventListener('online', () => this.setState({ offline: false }));
     }
 
     render() {

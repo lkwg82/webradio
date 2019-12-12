@@ -4,6 +4,7 @@ import { Settings } from './settings';
 import { OfflineHint } from './offline-hint';
 import { Favorites } from './favorites';
 import { InformationService } from './information-service';
+import { OfflineReconnector } from './offline-reconnector';
 
 class Player extends React.Component {
   constructor(props) {
@@ -18,6 +19,7 @@ class Player extends React.Component {
   render() {
     return (
       <div className="container">
+        <OfflineReconnector handler={(i) => this.handleClick(i)} url={this.state.streamUrl} />
         <Favorites
           settings={this.settings}
           informationService={this.informationService}
@@ -28,7 +30,7 @@ class Player extends React.Component {
           autoPlay
           controls
           onError={(e) => console.debug("error:" + JSON.stringify(e))}
-          onPlay={() => console.debug("play")}
+          onPlay={() => console.debug("playing " + this.state.streamUrl)}
           onPause={() => console.debug("paused")}
         />
         <OfflineHint />
@@ -38,9 +40,7 @@ class Player extends React.Component {
 
   handleClick(url) {
     console.debug("play " + url);
-    this.setState({
-      streamUrl: url,
-    });
+    this.setState({ streamUrl: url });
   }
 }
 
