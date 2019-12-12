@@ -21,7 +21,7 @@ class Player extends React.Component {
         <Favorites
           settings={this.settings}
           informationService={this.informationService}
-          click={(i, j) => this.handleClick(i, j)} />
+          click={(i) => this.handleClick(i)} />
         <ReactPlayer
           src={this.state.streamUrl}
           ref={(element) => { this.rap = element; }}
@@ -36,16 +36,12 @@ class Player extends React.Component {
     );
   }
 
-  handleClick(url, playRadioId) {
+  handleClick(url) {
     console.debug("play " + url);
-    console.debug("play " + playRadioId);
     this.setState({
       streamUrl: url,
-      activeRadioId: playRadioId,
     });
-    this.settings.saveActiveRadioId(playRadioId);
   }
 }
-
 
 export default Player;

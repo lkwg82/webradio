@@ -3,7 +3,8 @@ export class Settings {
 
     getActiveRadioId() {
         const value = localStorage.getItem("activeRadioId");
-        return Number.parseInt(value) || -1;
+        const parsed = Number.parseInt(value);
+        return parsed == 'NaN' ? -1 : parsed;
     }
 
     saveActiveRadioId(activeRadioId) {
@@ -12,7 +13,9 @@ export class Settings {
 
     getFavorites() {
         const value = localStorage.getItem("favorites") || "9013,9437,2459,2261";
-        return value.split(",").map(e => Number.parseInt(e));
+        return value.split(",")
+            .map(e => Number.parseInt(e))
+            .map(parsed => 'NaN' === parsed ? -1 : parsed);
     }
 
     saveFavorites(ids) {

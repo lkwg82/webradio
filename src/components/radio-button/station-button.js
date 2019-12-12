@@ -17,7 +17,6 @@ export class StationButton extends React.Component {
         const { stationId, informationService } = this.props;
         informationService.stationInfo(stationId)
             .then(result => {
-                console.debug(result);
                 this.setState({
                     'logo': result.logo,
                     'name': result.name,

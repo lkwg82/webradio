@@ -2,7 +2,12 @@ export class InformationService {
     constructor() {
         this.baseUrl = 'https://api-webradio.lgohlke.de/';
     }
+
     stationInfo(stationId) {
+        if (!Number.parseInt(stationId)) {
+            const err = new Error("invalid stationId:" + stationId);
+            throw err;
+        }
         const url = this.baseUrl + 'stationInfo?stationId=' + stationId;
         return fetch(url)
             .then(response => response.json())
