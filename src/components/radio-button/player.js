@@ -124,14 +124,6 @@ class Player extends React.Component {
 
   render() {
     const toggle = this.toggle.bind(this);
-    const Wrapper = styled.div`
-      min-height: 100vh;
-      width:100%
-      padding-right:15px;
-      padding-left:15px;
-      margin-right: auto;
-      margin-left: auto;
-    `;
     return (
       <div>
         {
