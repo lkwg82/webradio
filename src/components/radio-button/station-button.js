@@ -43,6 +43,9 @@ export class StationButton extends React.Component {
         `;
         const StationName = styled.div`
             padding-left: 80px;
+            text-overflow: ellipsis;
+            overflow: hidden;
+            white-space: nowrap;
         `;
 
         const { active, stationId, onClick } = this.props;
