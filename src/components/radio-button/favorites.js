@@ -62,7 +62,7 @@ export class Favorites extends React.Component {
                     <StationButton
                         key={index}
                         stationId={id}
-                        activeId={this.state.activeRadioId}
+                        active={id === this.state.activeRadioId}
                         informationService={this.informationService}
                         onClick={handler} />
                 ))}

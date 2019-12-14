@@ -49,12 +49,12 @@ export class StationButton extends React.Component {
     }
 
     render() {
-        const { activeId, stationId, onClick } = this.props;
+        const { active, stationId, onClick } = this.props;
         return <RadioButton
             logo={this.state.logo}
             key={stationId}
             block
-            variant={activeId === stationId ? 'primary' : 'secondary'}
+            variant={active ? 'primary' : 'secondary'}
             onClick={() => onClick(this.state.url, stationId)}
             size="lg">
             <StationName>{this.state.name}</StationName>
