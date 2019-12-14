@@ -28,6 +28,24 @@ function SearchPanelToggleButton({ toggle }) {
     onClick={toggle}>+</AddButton>;
 }
 
+const StyledKeyboard = styled.div`
+  position: fixed;
+  bottom:0;
+  left:0;
+  width:100%;
+  padding:10px;
+`;
+
+const SearchContainer = styled.div``;
+
+const Results = styled.div`
+  height: 50vh;
+  display: grid;
+  grid-template-columns: 40vW 40vW;
+  grid-gap: 10px;
+  align-items: center;
+  justify-content: center;
+`;
 class SearchPanel extends React.Component {
   constructor(props) {
     super(props);
@@ -94,28 +112,9 @@ class SearchPanel extends React.Component {
   }
 
   render() {
-    const StyledKeyboard = styled.div`
-      position: fixed;
-      bottom:0;
-      left:0;
-      width:100%;
-      padding:10px;
-    `;
-
-    const SearchContainer = styled.div`
-    `;
-
-    const Results = styled.div`
-      height: 50vh;
-      display: grid;
-      grid-template-columns: 40vW 40vW;
-      grid-gap: 10px;
-      align-items: center;
-      justify-content: center;
-    `;
     return <SearchContainer>
       <Results>
-        {this.state.results ? this.state.results : 'no result'}
+        {this.state.results ? this.state.results : 'Tippe mindestens drei Zeichen '}
       </Results>
       <StyledKeyboard>
         <InputGroup className="sm-1">

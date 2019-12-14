@@ -12,6 +12,7 @@ const RadioButton = styled(Button)`
     height: 80px;
     padding-bottom: 2px;
 
+    border-radius: 0 !important;
     font-size: 20px !important;
     font-weight: 400 !important;
     text-align: right;
