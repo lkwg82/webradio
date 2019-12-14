@@ -27,7 +27,7 @@ jobs:
       run: |
         git config --global user.email "deployer@localhost"
         git config --global user.name "deploy on push"
-        git remote set-url origin https://${{ secrets.GITHUB_TOKEN }}@github.com/${{ env.GITHUB_REPOSITORY }}.git 
+        git remote set-url origin https://${{ secrets.GITHUB_TOKEN }}@github.com/lkwg82/webradio.git 
         yarn run deploy
     - name: Updating Domain
       run: echo "Update domain"
