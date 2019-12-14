@@ -1,6 +1,9 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 import { StationButton } from './station-button';
 import styled from 'styled-components';
+import { SearchPanelToggleButton, SearchPanel } from '../search/search-panel';
+import { Settings } from './settings';
+import { InformationService } from '../../utils/information-service';
 
 const width = 30;
 const Grid = styled.div`
@@ -15,58 +18,72 @@ const Grid = styled.div`
 export class Favorites extends React.Component {
     constructor(props) {
         super(props);
-        this.settings = this.props.settings;
-        this.informationService = this.props.informationService;
+        this.settings = new Settings();
+        this.informationService = new InformationService();
+
         this.state = {
             favorites: [],
             activeRadioId: -1,
+            showSearch: false,
         };
-        this.isNew = true;
     }
 
     componentDidMount() {
         const activeRadioId = this.settings.getActiveRadioId();
-        const ids = this.settings.getFavorites();
-
         if (activeRadioId > 0) {
-            this.informationService.stationInfo(activeRadioId)
+            this.informationService
+                .stationInfo(activeRadioId)
                 .then(result => this.handleClick(result.url, activeRadioId));
         }
+
         this.setState({
-            favorites: ids,
-            activeRadioId: activeRadioId
+            favorites: this.settings.getFavorites()
         });
     }
 
     handleClick(url, stationId) {
-        // let newFavorites = [stationId];
-        // this.state.favorites
-        //     .filter(id => id !== stationId)
-        //     .map(id => newFavorites.push(id));
+        console.debug("play " + url + " / stationId: " + stationId);
         this.settings.saveFavorites(this.state.favorites);
-
         this.settings.saveActiveRadioId(stationId);
         this.setState({
-            //     // favorites: newFavorites,
             activeRadioId: stationId,
         });
-        this.props.click(url);
+        this.props.playRadioStream(url);
+    }
+
+    addStation(url, stationId) {
+        this.handleClick(url, stationId);
+        this.settings.addFavorite(stationId);
+        const newFavorites = this.settings.getFavorites();
+        this.setState({ favorites: newFavorites });
     }
 
     render() {
         const handler = this.handleClick.bind(this);
+        const toggleSearch = () => this.setState({ showSearch: !this.state.showSearch });
+        const addStation = this.addStation.bind(this);
 
         return (
-            <Grid>
-                {this.state.favorites.map((id, index) => (
-                    <StationButton
-                        key={index}
-                        stationId={id}
-                        active={id === this.state.activeRadioId}
-                        informationService={this.informationService}
-                        onClick={handler} />
-                ))}
-            </Grid>
+            <Fragment>
+                <Grid>
+                    {this.state.favorites.map(id => (
+                        <StationButton
+                            key={id}
+                            stationId={id}
+                            active={id === this.state.activeRadioId}
+                            onClick={handler} />
+                    ))}
+                </Grid>
+                {
+                    this.state.showSearch &&
+                    <SearchPanel
+                        addStation={addStation}
+                        favorites={this.state.favorites}
+                        toggle={toggleSearch}
+                    />
+                }
+                <SearchPanelToggleButton toggle={toggleSearch} />
+            </Fragment>
         );
     }
 }

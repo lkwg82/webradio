@@ -32,7 +32,7 @@ export class InformationService {
                 return json
                     .filter(item => item.station.streamUrls.length > 0)
                     .map(item => {
-                        console.log(item);
+                        console.debug(item);
                         return {
                             'id': item.id,
                             'logo': item.station['logo300x300'],

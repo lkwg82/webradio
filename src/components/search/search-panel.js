@@ -6,7 +6,7 @@ import InputGroup from 'react-bootstrap/InputGroup';
 import FormControl from 'react-bootstrap/FormControl';
 import Keyboard from 'react-simple-keyboard';
 import { StationButton } from '../radio-button/station-button';
-import { InformationService } from '../radio-button/information-service';
+import { InformationService } from '../../utils/information-service';
 
 const StyledKeyboard = styled.div`
   position: fixed;
@@ -16,7 +16,17 @@ const StyledKeyboard = styled.div`
   padding:10px;
 `;
 
-const SearchContainer = styled.div``;
+const SearchContainer = styled.div`
+  background-color: black;
+  z-index: 1;
+
+  left:0;
+  top:0;
+  position: fixed;
+
+  width:100%;
+  height: 100%;
+`;
 
 const Results = styled.div`
   height: 50vh;
@@ -31,7 +41,6 @@ export class SearchPanel extends React.Component {
   constructor(props) {
     super(props);
     this.informationService = new InformationService();
-    this.settings = props.settings;
     this.state = {
       input: '',
     };
@@ -43,7 +52,6 @@ export class SearchPanel extends React.Component {
   // }
 
   onKeyPress(button) {
-    console.log("Button pressed", button);
     const input = this.state.input;
 
     switch (button) {
@@ -62,62 +70,63 @@ export class SearchPanel extends React.Component {
     }
 
     if (this.state.input.length > 2) {
-      console.log("search for " + this.state.input);
-      this.informationService.stationQuery(input)
-        .then(results => {
-          console.log(results);
+      this.doSearch(this.state.input);
+    }
+  }
 
-          const buttons = results.slice(0, 6).map(result => {
+  doSearch(query) {
+    console.log("search for " + query);
+    this.informationService.stationQuery(query)
+      .then(results => {
+        console.log(results);
+
+        const setOfFavorites = new Set(this.props.favorites);
+        const buttons = results
+          .filter(result => !setOfFavorites.has(result.id))
+          .slice(0, 6).map(result => {
             const key = 'result_' + result.id;
-            console.log(result);
-            const handler = () => {
-              console.log(result.id);
-              this.settings.addFavorite(result.id);
-              this.settings.saveActiveRadioId(result.id);
+            const handler = (url, id) => {
+              this.props.addStation(url, id);
               this.props.toggle();
             };
 
             return <StationButton
-              informationService={this.informationService}
               key={key}
               active={false}
               stationId={result.id}
               onClick={handler} />;
           });
-          this.setState({ results: buttons });
-        });
-    }
-    else {
-      console.log(this.state.input.length);
-    }
+        this.setState({ results: buttons });
+      });
   }
 
   render() {
-    return <SearchContainer>
-      <Results>
-        {this.state.results ? this.state.results : 'Tippe mindestens drei Zeichen '}
-      </Results>
-      <StyledKeyboard>
-        <InputGroup className="sm-1">
-          <FormControl size="lg" placeholder="Suche" value={this.state.input} readOnly />
-        </InputGroup>
-        <Keyboard
-          useButtonTag={true}
-          useMouseEvents={true}
-          useTouchEvents={false}
-          onKeyPress={button => this.onKeyPress(button)}
-          maxLength={10}
-          layout={{
-            'default': [
-              'ESC 0 1 2 3 4 5 6 7 8 9 DEL',
-              'q w e r t z u i o p',
-              'a s d f g h j k l',
-              'y x c v b n m ö ä ü ___',
-            ],
-          }}
-        />
-      </StyledKeyboard>
-    </SearchContainer>;
+    return (
+      <SearchContainer target={document.body}>
+        <Results>
+          {this.state.results ? this.state.results : 'Tippe mindestens drei Zeichen '}
+        </Results>
+        <StyledKeyboard>
+          <InputGroup className="sm-1">
+            <FormControl size="lg" placeholder="Suche" value={this.state.input} readOnly />
+          </InputGroup>
+          <Keyboard
+            useButtonTag={true}
+            useMouseEvents={true}
+            useTouchEvents={false}
+            onKeyPress={button => this.onKeyPress(button)}
+            maxLength={10}
+            layout={{
+              'default': [
+                'ESC 0 1 2 3 4 5 6 7 8 9 DEL',
+                'q w e r t z u i o p',
+                'a s d f g h j k l',
+                'y x c v b n m ö ä ü ___',
+              ],
+            }}
+          />
+        </StyledKeyboard>
+      </SearchContainer>);
   }
 }
 

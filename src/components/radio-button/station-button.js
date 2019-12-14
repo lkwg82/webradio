@@ -2,6 +2,7 @@
 import React from 'react';
 import Button from 'react-bootstrap/Button';
 import styled from 'styled-components';
+import { InformationService } from '../../utils/information-service';
 
 const RadioButton = styled(Button)`
     background-image: url(${props => props.logo});
@@ -29,6 +30,7 @@ const StationName = styled.div`
 export class StationButton extends React.Component {
     constructor(props) {
         super(props);
+        this.informationService = new InformationService();
         this.state = {
             'new': true,
             'logo': '',
@@ -38,8 +40,8 @@ export class StationButton extends React.Component {
     }
 
     componentDidMount() {
-        const { stationId, informationService } = this.props;
-        informationService.stationInfo(stationId)
+        const { stationId } = this.props;
+        this.informationService.stationInfo(stationId)
             .then(result => {
                 this.setState({
                     'logo': result.logo,
@@ -51,14 +53,16 @@ export class StationButton extends React.Component {
 
     render() {
         const { active, stationId, onClick } = this.props;
-        return <RadioButton
-            logo={this.state.logo}
-            key={stationId}
-            block
-            variant={active ? 'primary' : 'secondary'}
-            onClick={() => onClick(this.state.url, stationId)}
-            size="lg">
-            <StationName>{this.state.name}</StationName>
-        </RadioButton>;
+        return (
+            <RadioButton
+                logo={this.state.logo}
+                key={stationId}
+                block
+                variant={active ? 'primary' : 'secondary'}
+                onClick={() => onClick(this.state.url, stationId)}
+                size="lg">
+                <StationName>{this.state.name}</StationName>
+            </RadioButton>
+        );
     }
 }
