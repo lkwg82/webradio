@@ -2,6 +2,16 @@ import React from 'react';
 import { StationButton } from './station-button';
 import styled from 'styled-components';
 
+const width = 30;
+const Grid = styled.div`
+    display: grid;
+    grid-template-columns: ${width}vW ${width}vW ${width}vW;
+    grid-gap: 10px;
+    margin:10px;
+    align-items: center;
+    justify-content: center;
+`;
+
 export class Favorites extends React.Component {
     constructor(props) {
         super(props);
@@ -11,6 +21,7 @@ export class Favorites extends React.Component {
             favorites: [],
             activeRadioId: -1,
         };
+        this.isNew = true;
     }
 
     componentDidMount() {
@@ -32,36 +43,30 @@ export class Favorites extends React.Component {
         // this.state.favorites
         //     .filter(id => id !== stationId)
         //     .map(id => newFavorites.push(id));
-
         this.settings.saveFavorites(this.state.favorites);
-        this.settings.saveActiveRadioId(stationId);
 
+        this.settings.saveActiveRadioId(stationId);
         this.setState({
-            // favorites: newFavorites,
+            //     // favorites: newFavorites,
             activeRadioId: stationId,
         });
         this.props.click(url);
     }
 
     render() {
-        const width = 30;
-        const Grid = styled.div`
-            display: grid;
-            grid-template-columns: ${width}vW ${width}vW ${width}vW;
-            grid-gap: 10px;
-            margin:10px;
-            align-items: center;
-            justify-content: center;
-        `;
         const handler = this.handleClick.bind(this);
-        const radioElements = this.state.favorites.map(id => {
-            return <StationButton
-                key={id}
-                stationId={id}
-                active={id === this.state.activeRadioId}
-                informationService={this.informationService}
-                onClick={handler} />;
-        });
-        return (<Grid>{radioElements}</Grid>);
+
+        return (
+            <Grid>
+                {this.state.favorites.map((id, index) => (
+                    <StationButton
+                        key={index}
+                        stationId={id}
+                        activeId={this.state.activeRadioId}
+                        informationService={this.informationService}
+                        onClick={handler} />
+                ))}
+            </Grid>
+        );
     }
 }
