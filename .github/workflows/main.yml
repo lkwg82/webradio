@@ -23,11 +23,14 @@ jobs:
           ${{ runner.os }}-yarn
     - name: Install Packages
       run: yarn install
-    - name: Deploy to GH Pages
-      run: |
-        git config --global user.email "deployer@localhost"
-        git config --global user.name "deploy on push"
-        git remote set-url origin https://${{ secrets.GITHUB_TOKEN }}@github.com/lkwg82/webradio.git 
-        yarn run deploy
+    - name: build production
+      run: yarn build
+    - name: Deploy
+      uses: crazy-max/ghaction-github-pages@v1
+      with:
+        target_branch: gh-pages
+        build_dir: build
+      env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     - name: Updating Domain
       run: echo "Update domain"
