@@ -1,13 +1,13 @@
 import React from 'react';
 import './App.css';
-import Player from './components/radio-button/player.js'
+import Player from './components/radio-button/player.js';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 function App() {
   return (
     <div className="App">
       <header className="App-header">
-          <Player/>
+        <Player />
       </header>
     </div>
   );
