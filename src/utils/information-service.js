@@ -12,12 +12,19 @@ export class InformationService {
         return fetch(url)
             .then(response => response.json())
             .then(json => {
+                console.debug(json);
                 return {
                     'logo': json['logo300x300'],
                     'name': json.name,
-                    'url': json.streamUrls.slice(0, 1)[0].streamUrl
+                    'url': this.findFirstNonPlsEntryInStreamList(json.streamUrls)
                 };
             });
+    }
+
+    findFirstNonPlsEntryInStreamList(streamUrls) {
+        return streamUrls
+            .map(e => e.streamUrl)
+            .find(url => !url.endsWith(".pls"));
     }
 
     stationQuery(query) {
