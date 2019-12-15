@@ -1,4 +1,4 @@
-import React, { Fragment } from 'react';
+import React from 'react';
 import { StationButton } from './station-button';
 import styled from 'styled-components';
 import { SearchPanelToggleButton, SearchPanel } from '../search/search-panel';
