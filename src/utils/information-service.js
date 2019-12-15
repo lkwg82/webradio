@@ -44,7 +44,7 @@ export class InformationService {
                             'id': item.id,
                             'logo': item.station['logo300x300'],
                             'name': item.station.name,
-                            'url': this.findFirstNonPlsEntryInStreamList(json.streamUrls)
+                            'url': this.findFirstNonPlsEntryInStreamList(item.station.streamUrls)
                         };
                     });
             });
