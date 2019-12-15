@@ -1,9 +1,11 @@
 {
-    "files.autoSave": "afterDelay",
+    "files.autoSave": "onFocusChange",
     "files.trimTrailingWhitespace": true,
 
     "eslint.autoFixOnSave": true,
     "eslint.alwaysShowStatus": true,
     "editor.formatOnSave": true,
     "git.postCommitCommand": "push",
+    "editor.formatOnType": true,
+    "autoimport.showNotifications": true,
 }

@@ -64,7 +64,7 @@ export class Favorites extends React.Component {
         const addStation = this.addStation.bind(this);
 
         return (
-            <Fragment>
+            <div className="favorites" >
                 <Grid>
                     {this.state.favorites.map(id => (
                         <StationButton
@@ -83,7 +83,7 @@ export class Favorites extends React.Component {
                     />
                 }
                 <SearchPanelToggleButton toggle={toggleSearch} />
-            </Fragment>
+            </div>
         );
     }
 }
