@@ -18,10 +18,7 @@ class Player extends React.Component {
     return (
       <div className="all-container">
         <Fragment>
-          <Favorites
-            informationService={this.informationService}
-            playRadioStream={playRadioStream}>
-          </Favorites>
+          <Favorites playRadioStream={playRadioStream}/>
           <ReactPlayer
             src={this.state.streamUrl}
             autoPlay
