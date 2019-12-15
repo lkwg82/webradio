@@ -33,7 +33,14 @@ export class Favorites extends React.Component {
         if (activeRadioId > 0) {
             this.informationService
                 .stationInfo(activeRadioId)
-                .then(result => this.handleClick(result.url, activeRadioId));
+                .then(result => {
+                    const stationInfo = {
+                        name: result.name,
+                        url: result.url,
+                        id: activeRadioId
+                    };
+                    this.handleClick(stationInfo);
+                });
         }
 
         this.setState({
@@ -41,19 +48,19 @@ export class Favorites extends React.Component {
         });
     }
 
-    handleClick(url, stationId) {
-        console.debug("play " + url + " / stationId: " + stationId);
+    handleClick(stationInfo) {
+        console.debug("play " + JSON.stringify(stationInfo));
         this.settings.saveFavorites(this.state.favorites);
-        this.settings.saveActiveRadioId(stationId);
+        this.settings.saveActiveRadioId(stationInfo.id);
         this.setState({
-            activeRadioId: stationId,
+            activeRadioId: stationInfo.id,
         });
-        this.props.playRadioStream(url);
+        this.props.playRadioStream(stationInfo);
     }
 
-    addStation(url, stationId) {
-        this.handleClick(url, stationId);
-        this.settings.addFavorite(stationId);
+    addStation(stationInfo) {
+        this.handleClick(stationInfo);
+        this.settings.addFavorite(stationInfo.id);
         const newFavorites = this.settings.getFavorites();
         this.setState({ favorites: newFavorites });
     }

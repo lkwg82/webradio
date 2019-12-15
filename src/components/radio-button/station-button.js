@@ -7,7 +7,7 @@ import { InformationService } from '../../utils/information-service';
 const RadioButton = styled(Button)`
     background-image: url(${props => props.logo});
     background-size: contain;
-    background-repeat: no-repeat; 
+    background-repeat: no-repeat;
     border-color: aliceblue;
     color: #0f0;
     height: 80px;
@@ -32,7 +32,6 @@ export class StationButton extends React.Component {
         super(props);
         this.informationService = new InformationService();
         this.state = {
-            'new': true,
             'logo': '',
             'name': '',
             'url': ''
@@ -44,22 +43,27 @@ export class StationButton extends React.Component {
         this.informationService.stationInfo(stationId)
             .then(result => {
                 this.setState({
-                    'logo': result.logo,
-                    'name': result.name,
-                    'url': result.url,
+                    logo: result.logo,
+                    name: result.name,
+                    url: result.url,
                 });
             });
     }
 
     render() {
         const { active, stationId, onClick } = this.props;
+        const stationInfo = {
+            id: stationId,
+            name: this.state.name,
+            url: this.state.url
+        };
         return (
             <RadioButton
                 logo={this.state.logo}
                 key={stationId}
                 block
                 variant={active ? 'primary' : 'secondary'}
-                onClick={() => onClick(this.state.url, stationId)}
+                onClick={() => onClick(stationInfo)}
                 size="lg">
                 <StationName>{this.state.name}</StationName>
             </RadioButton>

@@ -85,8 +85,8 @@ export class SearchPanel extends React.Component {
           .filter(result => !setOfFavorites.has(result.id))
           .slice(0, 6).map(result => {
             const key = 'result_' + result.id;
-            const handler = (url, id) => {
-              this.props.addStation(url, id);
+            const handler = (stationInfo) => {
+              this.props.addStation(stationInfo);
               this.props.toggle();
             };
 
@@ -135,8 +135,9 @@ const AddButton = styled(Button)`
   font-size: 30px
   position: fixed;
   left: 90%;
-  bottom: 10%; 
+  bottom: 10%;
 `;
+
 export function SearchPanelToggleButton({ toggle }) {
   return <AddButton variant="light" size="lg" onClick={toggle}>+</AddButton>;
 }

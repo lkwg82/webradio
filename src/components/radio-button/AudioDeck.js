@@ -14,16 +14,25 @@ export class AudioDeck extends React.Component {
         super(props);
         this.state = {
             status: 'UNKNOWN',
-            stationname: 'radio',
         };
     }
     render() {
+        const { name, url } = this.props.stationInfo;
+
         return (<div className="audioDeck">
             <div>
                 <Status>{this.state.status}</Status>
-                <span>{this.props.streamUrl}</span>
+                <span>{name}</span>
             </div>
-            <ReactPlayer src={this.props.streamUrl} autoPlay onError={(e) => { console.debug(e); this.setState({ status: 'error' }); }} onCanPlay={() => this.setState({ status: 'connecting' })} onCanPlayThrough={() => this.setState({ status: 'playing' })} onAbort={() => this.setState({ status: 'stopped' })} onSeeked={() => this.setState({ status: 'onSeeked' })} onPause={() => this.setState({ status: 'paused' })} />
+            <ReactPlayer
+                src={url}
+                autoPlay
+                onError={(e) => { console.debug(e); this.setState({ status: 'error' }); }}
+                onCanPlay={() => this.setState({ status: 'connecting' })}
+                onCanPlayThrough={() => this.setState({ status: 'playing' })}
+                onAbort={() => this.setState({ status: 'stopped' })}
+                onSeeked={() => this.setState({ status: 'onSeeked' })}
+                onPause={() => this.setState({ status: 'paused' })} />
         </div>);
     }
 }

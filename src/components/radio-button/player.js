@@ -9,7 +9,8 @@ class Player extends React.Component {
     super(props);
     this.offlineReconnector = new OfflineReconnector();
     this.state = {
-      streamUrl: ''
+      streamUrl: '',
+      stationInfo: { name: '', id: -1, url: '' }
     };
   }
 
@@ -20,16 +21,18 @@ class Player extends React.Component {
       <div className="all-container">
         <Fragment>
           <Favorites playRadioStream={playRadioStream} />
-          <AudioDeck streamUrl={this.state.streamUrl} />
+          <AudioDeck stationInfo={this.state.stationInfo} />
         </Fragment>
         <OfflineHint />
       </div>
     );
   }
 
-  playRadioStream(url) {
-    console.debug("play " + url);
-    this.setState({ streamUrl: url });
+  playRadioStream(stationInfo) {
+    console.debug("play " + JSON.stringify(stationInfo));
+    this.setState({
+      stationInfo: stationInfo
+    });
   }
 }
 
