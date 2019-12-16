@@ -6,7 +6,7 @@ import { AudioDeck } from './AudioDeck';
 import styled from 'styled-components';
 import Button from 'react-bootstrap/Button';
 
-import { SpotifyPanel } from './SpotifyPanel';
+import { SpotifyPanel, SpotifyWebsocket } from './SpotifyPanel';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBroadcastTower } from '@fortawesome/free-solid-svg-icons';
 import { faSpotify } from '@fortawesome/free-brands-svg-icons';

@@ -18,6 +18,50 @@ const Placeholder = styled.div`
     align-items: center;
 `;
 
+export class SpotifyWebsocket extends WebSocket {
+    constructor() {
+        super("ws://localhost:24879/events");
+        this.onopen = () => {
+            console.log("opened");
+        };
+        this.onclose = () => {
+            console.log("closed");
+        };
+        this.onmessage = (msg) => {
+            console.log("message received: " + msg);
+
+            const data = msg.data;
+            const json = JSON.parse(data);
+            switch (json.event) {
+                case 'playbackResumed':
+                    this.onPlaybackPaused();
+                    break;
+                case 'playbackPaused':
+                    this.onPlaybackPaused();
+                    break;
+                default:
+                    console.log("unmatched event: " + json.event);
+            }
+            this.onAnyEvent();
+        };
+        this.onerror = () => {
+            console.log("error ");
+        };
+
+        this.onPlaybackResumed = () => {
+            console.log("playback resumed ");
+        };
+
+        this.onPlaybackPaused = () => {
+            console.log("playback paused");
+        };
+
+        this.onAnyEvent = (event) => {
+            console.log("event: " + event);
+        };
+    }
+}
+
 export class SpotifyPanel extends React.Component {
     constructor(props) {
         super(props);
@@ -37,30 +81,26 @@ export class SpotifyPanel extends React.Component {
     }
 
     initConnection() {
-        const ws = new WebSocket("ws://localhost:24879/events");
+        const ws = new SpotifyWebsocket();
         ws.onopen = () => {
             console.log("opened");
             this.play();
             this.updateCurrent();
             this.setState({ operationInProgress: false });
         };
-        ws.onmessage = (msg) => {
-            const data = msg.data;
-            const json = JSON.parse(data);
-            console.log(data);
-            switch (json.event) {
-                case 'playbackResumed':
-                    this.setState({ isPaused: false, operationInProgress: false });
-                    break;
-                case 'playbackPaused':
-                    this.setState({ isPaused: true, operationInProgress: false });
-                    break;
-                default:
-                    console.log("unmatched event: " + json.event);
-            }
+
+        ws.onAnyEvent = () => {
             this.updateCurrent();
             this.setState({ operationInProgress: false });
         };
+
+        ws.onPlaybackResumed = () => {
+            this.setState({ isPaused: false, operationInProgress: false });
+        };
+        ws.onPlaybackPaused = () => {
+            this.setState({ isPaused: true, operationInProgress: false });
+        };
+
         ws.onerror = (e) => {
             console.log(e);
             this.setState({ operationInProgress: true });
