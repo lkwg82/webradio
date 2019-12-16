@@ -35,6 +35,7 @@ export class SpotifyPanel extends React.Component {
                     break;
             }
             this.updateCurrent();
+            this.setState({ operationInProgress: false });
         };
         this.updateCurrent();
     }
@@ -75,20 +76,20 @@ export class SpotifyPanel extends React.Component {
             <span>{this.state.title}</span> - <span>{this.state.artist}</span>
             <p />
             <ButtonGroup>
-                <Button size="lg" onClick={() => this.stepBack()}>
+                <Button size="lg" onClick={() => this.stepBack()} disabled={this.state.operationInProgress}>
                     <FontAwesomeIcon icon={faStepBackward} />
                 </Button>
                 {
                     this.state.isPaused ?
-                        <Button onClick={() => this.play()}>
+                        <Button onClick={() => this.play()} disabled={this.state.operationInProgress}>
                             <FontAwesomeIcon icon={faPlay} />
                         </Button>
                         :
-                        <Button onClick={() => this.pause()}>
+                        <Button onClick={() => this.pause()} disabled={this.state.operationInProgress}>
                             <FontAwesomeIcon icon={faPause} />
                         </Button>
                 }
-                <Button onClick={() => this.stepForward()}>
+                <Button onClick={() => this.stepForward()} disabled={this.state.operationInProgress}>
                     <FontAwesomeIcon icon={faStepForward} />
                 </Button>
             </ButtonGroup>
@@ -96,20 +97,24 @@ export class SpotifyPanel extends React.Component {
     }
 
     stepBack() {
+        this.setState({ operationInProgress: true });
         this.SpotifyApiClient.stepBack()
             .then(() => this.updateCurrent());
     }
 
     stepForward() {
+        this.setState({ operationInProgress: true });
         this.SpotifyApiClient.stepForward()
             .then(() => this.updateCurrent());
     }
 
     play() {
+        this.setState({ operationInProgress: true });
         this.SpotifyApiClient.play()
             .then(() => this.updateCurrent());
     }
     pause() {
+        this.setState({ operationInProgress: true });
         this.SpotifyApiClient.pause()
             .then(() => this.updateCurrent());
     }
