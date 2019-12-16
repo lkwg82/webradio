@@ -28,14 +28,21 @@ export class SpotifyPanel extends React.Component {
             title: '',
             imageFileId: '',
             isPaused: false,
+            operationInProgress: true
         };
     }
 
     componentDidMount() {
+        this.initConnection();
+    }
+
+    initConnection() {
         const ws = new WebSocket("ws://localhost:24879/events");
         ws.onopen = () => {
             console.log("opened");
             this.play();
+            this.updateCurrent();
+            this.setState({ operationInProgress: false });
         };
         ws.onmessage = (msg) => {
             const data = msg.data;
@@ -43,10 +50,10 @@ export class SpotifyPanel extends React.Component {
             console.log(data);
             switch (json.event) {
                 case 'playbackResumed':
-                    this.setState({ isPaused: false });
+                    this.setState({ isPaused: false, operationInProgress: false });
                     break;
                 case 'playbackPaused':
-                    this.setState({ isPaused: true });
+                    this.setState({ isPaused: true, operationInProgress: false });
                     break;
                 default:
                     console.log("unmatched event: " + json.event);
@@ -54,7 +61,20 @@ export class SpotifyPanel extends React.Component {
             this.updateCurrent();
             this.setState({ operationInProgress: false });
         };
-        this.updateCurrent();
+        ws.onerror = (e) => {
+            console.log(e);
+            this.setState({ operationInProgress: true });
+            setTimeout(() => this.initConnection(), 1000);
+        };
+
+        ws.onclose = () => {
+            console.log("closed");
+            this.setState({
+                operationInProgress: true,
+                imageFileId: ''
+            });
+            setTimeout(() => this.initConnection(), 1000);
+        };
     }
 
     componentWillUnmount() {
@@ -97,9 +117,9 @@ export class SpotifyPanel extends React.Component {
                     <FontAwesomeIcon icon={faPoo} />
                 </Placeholder>
                 :
-                <image
+                <img
                     src={this.baseImageUrl + this.state.imageFileId}
-                    alt="no image"
+                    alt="placeholder"
                     width={300}
                     height={300}
                 />
