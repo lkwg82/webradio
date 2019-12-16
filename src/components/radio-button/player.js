@@ -20,39 +20,8 @@ export const ModeButton = styled(Button)`
   border-width: 0 !important;
   width:100px;
   overflow:hidden;
-`;
-
-const ToggleSpotifyButton = styled(ModeButton)`
   left: 80%;
 `;
-
-class SpotifyButton extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      showRadio: false
-    };
-  }
-  render() {
-    const toggle = () => {
-      this.props.toggle();
-      this.toggle();
-    };
-
-    return (
-      <ToggleSpotifyButton size="lg" onClick={toggle}>
-        {this.state.showRadio ?
-          <FontAwesomeIcon icon={faSpotify} /> :
-          <FontAwesomeIcon icon={faBroadcastTower} />
-        }
-      </ToggleSpotifyButton>
-    );
-  }
-
-  toggle() {
-    this.setState({ showRadio: !this.state.showRadio });
-  }
-}
 
 class Player extends React.Component {
   constructor(props) {
@@ -80,7 +49,16 @@ class Player extends React.Component {
           </Fragment>
         }
         <OfflineHint />
-        <SpotifyButton toggle={toggle} />
+        {
+          this.state.showSpotify ?
+            <ModeButton size="lg" onClick={toggle}>
+              <FontAwesomeIcon icon={faBroadcastTower} />
+            </ModeButton>
+            :
+            <ModeButton size="lg" onClick={toggle}>
+              <FontAwesomeIcon icon={faSpotify} />
+            </ModeButton>
+        }
       </div>
     );
   }
