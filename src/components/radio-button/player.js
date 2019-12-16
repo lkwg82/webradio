@@ -61,7 +61,7 @@ class Player extends React.Component {
     this.state = {
       streamUrl: '',
       stationInfo: { name: '', id: -1, url: '' },
-      showSpotify: true,
+      showSpotify: false,
     };
   }
 
