@@ -135,7 +135,7 @@ const AddButton = styled(Button)`
   font-size: 30px
   position: fixed;
   left: 90%;
-  bottom: 10%;
+  bottom: 5%;
 `;
 
 export function SearchPanelToggleButton({ toggle }) {
