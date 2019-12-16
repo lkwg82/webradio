@@ -6,7 +6,8 @@ import { AudioDeck } from './AudioDeck';
 import styled from 'styled-components';
 import Button from 'react-bootstrap/Button';
 
-import { SpotifyPanel, SpotifyWebsocket } from './SpotifyPanel';
+import { SpotifyPanel } from './SpotifyPanel';
+import { SpotifyWebsocket } from './SpotifyWebsocket';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBroadcastTower } from '@fortawesome/free-solid-svg-icons';
 import { faSpotify } from '@fortawesome/free-brands-svg-icons';
@@ -22,6 +23,26 @@ export const ModeButton = styled(Button)`
   overflow:hidden;
   left: 80%;
 `;
+
+class SpotifyPlayDetector extends React.Component {
+  componentDidUpdate() { this.initConnection(); }
+  render() {
+    return "";
+  }
+
+  initConnection() {
+    const ws = new SpotifyWebsocket();
+    ws.onclose = () => {
+      setTimeout(() => this.initConnection(), 1000);
+    };
+    // ws.onerror = () => {
+    //   setTimeout(() => this.initConnection(), 1000);
+    // };
+    ws.onPlaybackResumed = () => {
+      console.log("need to switch");
+    };
+  }
+}
 
 class Player extends React.Component {
   constructor(props) {
@@ -49,6 +70,7 @@ class Player extends React.Component {
           </Fragment>
         }
         <OfflineHint />
+        <SpotifyPlayDetector />
         {
           this.state.showSpotify ?
             <ModeButton size="lg" onClick={toggle}>

@@ -4,6 +4,7 @@ import { faStepForward, faPlay, faStepBackward, faPause, faPoo } from '@fortawes
 import Button from 'react-bootstrap/Button';
 import ButtonGroup from 'react-bootstrap/ButtonGroup';
 import styled from 'styled-components';
+import { SpotifyWebsocket } from './SpotifyWebsocket';
 
 const Placeholder = styled.div`
     width:300px;
@@ -17,50 +18,6 @@ const Placeholder = styled.div`
     justify-content: center;
     align-items: center;
 `;
-
-export class SpotifyWebsocket extends WebSocket {
-    constructor() {
-        super("ws://localhost:24879/events");
-        this.onopen = () => {
-            console.log("opened");
-        };
-        this.onclose = () => {
-            console.log("closed");
-        };
-        this.onmessage = (msg) => {
-            console.log("message received: " + msg);
-
-            const data = msg.data;
-            const json = JSON.parse(data);
-            switch (json.event) {
-                case 'playbackResumed':
-                    this.onPlaybackPaused();
-                    break;
-                case 'playbackPaused':
-                    this.onPlaybackPaused();
-                    break;
-                default:
-                    console.log("unmatched event: " + json.event);
-            }
-            this.onAnyEvent();
-        };
-        this.onerror = () => {
-            console.log("error ");
-        };
-
-        this.onPlaybackResumed = () => {
-            console.log("playback resumed ");
-        };
-
-        this.onPlaybackPaused = () => {
-            console.log("playback paused");
-        };
-
-        this.onAnyEvent = (event) => {
-            console.log("event: " + event);
-        };
-    }
-}
 
 export class SpotifyPanel extends React.Component {
     constructor(props) {
@@ -97,6 +54,7 @@ export class SpotifyPanel extends React.Component {
         ws.onPlaybackResumed = () => {
             this.setState({ isPaused: false, operationInProgress: false });
         };
+
         ws.onPlaybackPaused = () => {
             this.setState({ isPaused: true, operationInProgress: false });
         };
@@ -104,7 +62,7 @@ export class SpotifyPanel extends React.Component {
         ws.onerror = (e) => {
             console.log(e);
             this.setState({ operationInProgress: true });
-            setTimeout(() => this.initConnection(), 1000);
+            // setTimeout(() => this.initConnection(), 1000);
         };
 
         ws.onclose = () => {
