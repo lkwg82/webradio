@@ -21,6 +21,7 @@ export class SpotifyPanel extends React.Component {
         const ws = new WebSocket("ws://localhost:24879/events");
         ws.onopen = () => {
             console.log("opened");
+            this.play();
         };
         ws.onmessage = (msg) => {
             const data = msg.data;
@@ -33,11 +34,18 @@ export class SpotifyPanel extends React.Component {
                 case 'playbackPaused':
                     this.setState({ isPaused: true });
                     break;
+                default:
+                    console.log("unmatched event: " + json.event);
             }
             this.updateCurrent();
             this.setState({ operationInProgress: false });
         };
         this.updateCurrent();
+    }
+
+    componentWillUnmount() {
+        console.log("will pause spotify");
+        this.pause();
     }
 
     updateCurrent() {
