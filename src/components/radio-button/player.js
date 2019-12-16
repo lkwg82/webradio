@@ -40,6 +40,7 @@ class SpotifyPlayDetector extends React.Component {
     // };
     ws.onPlaybackResumed = () => {
       console.log("need to switch");
+      this.props.showSpotify();
     };
   }
 }
@@ -53,6 +54,7 @@ class Player extends React.Component {
       stationInfo: { name: '', id: -1, url: '' },
       showSpotify: false,
     };
+
   }
 
   render() {
@@ -70,7 +72,7 @@ class Player extends React.Component {
           </Fragment>
         }
         <OfflineHint />
-        <SpotifyPlayDetector />
+        <SpotifyPlayDetector showSpotify={() => { this.setState({ showSpotify: true }); }} />
         {
           this.state.showSpotify ?
             <ModeButton size="lg" onClick={toggle}>
