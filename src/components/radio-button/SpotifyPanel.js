@@ -1,16 +1,22 @@
 import React from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faStepForward, faPlay, faStepBackward, faPause } from '@fortawesome/free-solid-svg-icons';
+import Button from 'react-bootstrap/Button';
+import ButtonGroup from 'react-bootstrap/ButtonGroup';
+
 export class SpotifyPanel extends React.Component {
     constructor(props) {
         super(props);
         this.baseImageUrl = 'https://i.scdn.co/image/';
+        this.SpotifyApiClient = new SpotifyApiClient();
         this.state = {
             artist: '',
             title: '',
             imageFileId: '',
+            isPaused: false,
         };
     }
+
     componentDidMount() {
         const ws = new WebSocket("ws://localhost:24879/events");
         ws.onopen = () => {
@@ -18,12 +24,21 @@ export class SpotifyPanel extends React.Component {
         };
         ws.onmessage = (msg) => {
             const data = msg.data;
+            const json = JSON.parse(data);
             console.log(data);
+            switch (json.event) {
+                case 'playbackResumed':
+                    this.setState({ isPaused: false });
+                    break;
+                case 'playbackPaused':
+                    this.setState({ isPaused: true });
+                    break;
+            }
             this.updateCurrent();
         };
         this.updateCurrent();
-        // setInterval(() => this.updateCurrent(), 1000);
     }
+
     updateCurrent() {
         const baseUrl = 'http://localhost:24879';
         fetch(baseUrl + '/player/current', { method: 'POST' })
@@ -42,7 +57,7 @@ export class SpotifyPanel extends React.Component {
                 console.log(json);
                 const fileIdCover = json.album.coverGroup.image[0].fileId;
                 const name = json.name;
-                const artist = json.artist.map(a => a.name).join(',');
+                const artist = json.artist.map(a => a.name).join(' & ');
                 this.setState({
                     imageFileId: fileIdCover.toLowerCase(),
                     title: name,
@@ -51,17 +66,88 @@ export class SpotifyPanel extends React.Component {
             })
             .catch(err => console.log(err));
     }
+
     render() {
+        console.log("paused: " + this.state.isPaused);
         return (<div>
             <img src={this.baseImageUrl + this.state.imageFileId} alt="album art" />
             <p />
             <span>{this.state.title}</span> - <span>{this.state.artist}</span>
-            <div>
-                <FontAwesomeIcon icon={faStepBackward} />
-                <FontAwesomeIcon icon={faPlay} />
-                <FontAwesomeIcon icon={faPause} />
-                <FontAwesomeIcon icon={faStepForward} />
-            </div>
+            <p />
+            <ButtonGroup>
+                <Button size="lg" onClick={() => this.stepBack()}>
+                    <FontAwesomeIcon icon={faStepBackward} />
+                </Button>
+                {
+                    this.state.isPaused ?
+                        <Button onClick={() => this.play()}>
+                            <FontAwesomeIcon icon={faPlay} />
+                        </Button>
+                        :
+                        <Button onClick={() => this.pause()}>
+                            <FontAwesomeIcon icon={faPause} />
+                        </Button>
+                }
+                <Button onClick={() => this.stepForward()}>
+                    <FontAwesomeIcon icon={faStepForward} />
+                </Button>
+            </ButtonGroup>
         </div>);
+    }
+
+    stepBack() {
+        this.SpotifyApiClient.stepBack()
+            .then(() => this.updateCurrent());
+    }
+
+    stepForward() {
+        this.SpotifyApiClient.stepForward()
+            .then(() => this.updateCurrent());
+    }
+
+    play() {
+        this.SpotifyApiClient.play()
+            .then(() => this.updateCurrent());
+    }
+    pause() {
+        this.SpotifyApiClient.pause()
+            .then(() => this.updateCurrent());
+    }
+}
+
+class SpotifyApiClient {
+    constructor() {
+        this.baseUrl = 'http://localhost:24879';
+    }
+
+    stepBack() {
+        return this.doActionOrRetry('/player/prev');
+    }
+
+    stepForward() {
+        return this.doActionOrRetry('/player/next');
+    }
+
+    play() {
+        return this.doActionOrRetry('/player/resume');
+    }
+
+    pause() {
+        return this.doActionOrRetry('/player/pause');
+    }
+
+    doActionOrRetry(path) {
+        return this.post(path).then(response => {
+            console.log('invoking ' + path);
+            if (response.status === 500) {
+                console.log(response);
+                setTimeout(() => this.doActionOrRetry(path), 300);
+            }
+            return response;
+        });
+    }
+
+    post(path) {
+        return fetch(this.baseUrl + path, { method: 'POST' });
     }
 }
