@@ -8,6 +8,9 @@ import Keyboard from 'react-simple-keyboard';
 import { StationButton } from '../radio-button/station-button';
 import { InformationService } from '../../utils/information-service';
 
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faSearch } from '@fortawesome/free-solid-svg-icons';
+
 const StyledKeyboard = styled.div`
   position: fixed;
   bottom:0;
@@ -130,14 +133,23 @@ export class SearchPanel extends React.Component {
   }
 }
 
-const AddButton = styled(Button)`
+const SearchButton = styled(Button)`
   border-radius: 50% !important;
-  font-size: 30px
+  font-size: 50px !important;
   position: fixed;
-  left: 90%;
   bottom: 5%;
+  background-color: unset !important;
+  border-width: 0 !important;
+  width:100px;import { Button } from 'react-bootstrap/Button';
+
+  overflow:hidden;
+  left: 90%;
 `;
 
 export function SearchPanelToggleButton({ toggle }) {
-  return <AddButton variant="light" size="lg" onClick={toggle}>+</AddButton>;
+  return (
+    <SearchButton size="lg" onClick={toggle}>
+      <FontAwesomeIcon icon={faSearch} />
+    </SearchButton>
+  );
 }
