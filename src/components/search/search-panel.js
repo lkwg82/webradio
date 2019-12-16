@@ -140,7 +140,7 @@ const SearchButton = styled(Button)`
   bottom: 5%;
   background-color: unset !important;
   border-width: 0 !important;
-  width:100px;import { Button } from 'react-bootstrap/Button';
+  width:100px;
 
   overflow:hidden;
   left: 90%;

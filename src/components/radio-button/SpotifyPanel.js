@@ -1,8 +1,22 @@
 import React from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faStepForward, faPlay, faStepBackward, faPause } from '@fortawesome/free-solid-svg-icons';
+import { faStepForward, faPlay, faStepBackward, faPause, faPoo } from '@fortawesome/free-solid-svg-icons';
 import Button from 'react-bootstrap/Button';
 import ButtonGroup from 'react-bootstrap/ButtonGroup';
+import styled from 'styled-components';
+
+const Placeholder = styled.div`
+    width:300px;
+    min-height:300px;
+    border: 1px solid white;
+
+    font-size: 50px !important;
+    margin:auto;
+
+    display:flex;
+    justify-content: center;
+    align-items: center;
+`;
 
 export class SpotifyPanel extends React.Component {
     constructor(props) {
@@ -77,9 +91,19 @@ export class SpotifyPanel extends React.Component {
     }
 
     render() {
-        console.log("paused: " + this.state.isPaused);
         return (<div>
-            <img src={this.baseImageUrl + this.state.imageFileId} alt="album art" />
+            {this.state.imageFileId === '' ?
+                <Placeholder>
+                    <FontAwesomeIcon icon={faPoo} />
+                </Placeholder>
+                :
+                <image
+                    src={this.baseImageUrl + this.state.imageFileId}
+                    alt="no image"
+                    width={300}
+                    height={300}
+                />
+            }
             <p />
             <span>{this.state.title}</span> - <span>{this.state.artist}</span>
             <p />
