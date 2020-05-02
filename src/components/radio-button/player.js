@@ -7,6 +7,7 @@ import styled from 'styled-components';
 import Button from 'react-bootstrap/Button';
 
 import { SpotifyPanel } from './SpotifyPanel';
+import { GoogleAnalytics } from '../../utils/google-analytics';
 import { SpotifyWebsocket } from './SpotifyWebsocket';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBroadcastTower } from '@fortawesome/free-solid-svg-icons';
@@ -49,6 +50,7 @@ class Player extends React.Component {
   constructor(props) {
     super(props);
     this.offlineReconnector = new OfflineReconnector();
+    this.analytics = new GoogleAnalytics();
     this.state = {
       streamUrl: '',
       stationInfo: { name: '', id: -1, url: '' },
@@ -89,6 +91,7 @@ class Player extends React.Component {
 
   playRadioStream(stationInfo) {
     console.debug("play " + JSON.stringify(stationInfo));
+    this.analytics.eventStationSelection(stationInfo.name);
     this.setState({ stationInfo: stationInfo });
   }
 
