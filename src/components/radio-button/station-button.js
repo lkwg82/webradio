@@ -63,8 +63,7 @@ export class StationButton extends React.Component {
                 key={stationId}
                 block
                 variant={active ? 'primary' : 'secondary'}
-                onClick={() => onClick(stationInfo)}
-                size="lg">
+                onClick={() => onClick(stationInfo)}>
                 <StationName>{this.state.name}</StationName>
             </RadioButton>
         );
