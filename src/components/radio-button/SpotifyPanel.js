@@ -5,6 +5,7 @@ import Button from 'react-bootstrap/Button';
 import ButtonGroup from 'react-bootstrap/ButtonGroup';
 import styled from 'styled-components';
 import { SpotifyWebsocket } from './SpotifyWebsocket';
+import { GoogleAnalytics } from '../../utils/google-analytics';
 
 const Placeholder = styled.div`
     width:300px;
@@ -97,11 +98,17 @@ export class SpotifyPanel extends React.Component {
                 }
                 console.log(json);
                 const fileIdCover = json.album.coverGroup.image[0].fileId;
-                const name = json.name;
+                const title = json.name;
                 const artist = json.artist.map(a => a.name).join(' & ');
+
+
+                const analytics = new GoogleAnalytics();
+                analytics.event('spotify', 'artist', artist);
+                analytics.event('spotify', 'title', title);
+
                 this.setState({
                     imageFileId: fileIdCover.toLowerCase(),
-                    title: name,
+                    title: title,
                     artist: artist
                 });
             })
