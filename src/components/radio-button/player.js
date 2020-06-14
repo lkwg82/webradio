@@ -34,6 +34,7 @@ class SpotifyPlayDetector extends React.Component {
   initConnection() {
     const ws = new SpotifyWebsocket();
     ws.onclose = () => {
+      // memory leak, currently dont know an alternative
       setTimeout(() => this.initConnection(), 1000);
     };
     // ws.onerror = () => {
