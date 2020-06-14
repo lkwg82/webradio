@@ -1,6 +1,7 @@
 export class InformationService {
     constructor() {
-        this.baseUrl = 'https://api-webradio.lgohlke.de/';
+        // this.baseUrl = 'https://api-webradio.lgohlke.de/';
+        this.baseUrl = 'http://localhost:8080/';
     }
 
     stationInfo(stationId) {
@@ -47,6 +48,21 @@ export class InformationService {
                             'url': this.findFirstNonPlsEntryInStreamList(item.station.streamUrls)
                         };
                     });
+            });
+    }
+
+    nowplaying(stationId){
+        if (!Number.parseInt(stationId)) {
+            const err = new Error("invalid stationId:" + stationId);
+            throw err;
+        }
+
+        const url = this.baseUrl + 'nowplaying?stationId=' + stationId;
+        return fetch(url)
+            .then(response => response.json())
+            .then(json => {
+                console.debug(json);
+                return json;
             });
     }
 }
