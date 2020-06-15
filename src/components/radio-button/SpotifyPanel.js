@@ -63,7 +63,7 @@ export class SpotifyPanel extends React.Component {
         ws.onerror = (e) => {
             console.log(e);
             this.setState({ operationInProgress: true });
-            // setTimeout(() => this.initConnection(), 1000);
+            setTimeout(() => this.initConnection(), 1000);
         };
 
         ws.onclose = () => {
