@@ -37,7 +37,10 @@
 .audioDeck .song,
 .spotify .song {
     font-size: 2rem;
-    font-weight: 800
+    font-weight: 800;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 .spotify button{
     font-size: 3rem;
