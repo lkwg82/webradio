@@ -76,6 +76,6 @@ class NowPlaying extends React.Component {
     }
 
     render() {
-        return (<div>{this.state.title}</div>);
+        return (<div className="song">{this.state.title}</div>);
     }
 }

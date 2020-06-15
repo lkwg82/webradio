@@ -32,3 +32,11 @@
 .audioDeck {
     flex: 0 1 50px;
 }
+.audioDeck .song,
+.spotify .song {
+    font-size: 2rem;
+    font-weight: 800
+}
+.spotify button{
+    font-size: 3rem;
+}
