@@ -57,7 +57,7 @@ export class InformationService {
             throw err;
         }
 
-        const url = this.baseUrl + 'nowplaying?stationId=' + stationId;
+        const url = this.baseUrl + 'nowPlaying?stationId=' + stationId;
         return fetch(url)
             .then(response => response.json())
             .then(json => {
