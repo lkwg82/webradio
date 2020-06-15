@@ -72,7 +72,7 @@ export class SpotifyPanel extends React.Component {
                 operationInProgress: true,
                 imageFileId: ''
             });
-            setTimeout(() => this.initConnection(), 1000);
+            // setTimeout(() => this.initConnection(), 1000);
         };
     }
 

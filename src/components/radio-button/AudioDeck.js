@@ -76,6 +76,6 @@ class NowPlaying extends React.Component {
     }
 
     render() {
-        return (<marquee>{this.state.title}</marquee>);
+        return (<div>{this.state.title}</div>);
     }
 }
