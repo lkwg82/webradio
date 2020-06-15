@@ -78,7 +78,6 @@ class Player extends React.Component {
             stationInfo: {name: '', id: -1, url: ''},
             showSpotify: false,
         };
-
     }
 
     render() {
