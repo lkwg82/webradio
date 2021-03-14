@@ -1,6 +1,6 @@
 import React from 'react';
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
-import {faStepForward, faPlay, faStepBackward, faPause, faPoo} from '@fortawesome/free-solid-svg-icons';
+import {faPause, faPlay, faPoo, faStepBackward, faStepForward} from '@fortawesome/free-solid-svg-icons';
 import Button from 'react-bootstrap/Button';
 import ButtonGroup from 'react-bootstrap/ButtonGroup';
 import styled from 'styled-components';
@@ -97,9 +97,10 @@ export class SpotifyPanel extends React.Component {
                     return;
                 }
                 console.log(json);
-                const fileIdCover = json.album.coverGroup.image[0].fileId;
-                const title = json.name;
-                const artist = json.artist.map(a => a.name).join(' & ');
+                const track = json.track
+                const fileIdCover = track.album.coverGroup.image[0].fileId;
+                const title = track.name;
+                const artist = track.artist.map(a => a.name).join(' & ');
 
 
                 const analytics = new GoogleAnalytics();
