@@ -2,21 +2,17 @@
 export class Settings {
 
     getActiveRadioId() {
-        const value = localStorage.getItem("activeRadioId");
-        const parsed = Number.parseInt(value);
-        return parsed === 'NaN' ? -1 : parsed;
+        return localStorage.getItem("activeRadioId2") || "cosmo";
     }
 
     saveActiveRadioId(activeRadioId) {
-        localStorage.setItem("activeRadioId", activeRadioId);
+        localStorage.setItem("activeRadioId2", activeRadioId);
     }
 
     getFavorites() {
-        const value = localStorage.getItem("favorites") || "9013,9437,2459,2261,2106,1382,2111,22077";
-        const numbers = value.split(",")
-            .map(e => Number.parseInt(e))
-            .map(parsed => 'NaN' === parsed ? -1 : parsed);
-        return Array.from(new Set(numbers));
+        const value = localStorage.getItem("favorites2") || "cosmo,1046rtl,rbbradioeins,1live,meinkinderradio,cosmoneu";
+        const ids = value.split(",");
+        return Array.from(new Set(ids));
     }
 
     addFavorite(stationId) {
@@ -26,6 +22,6 @@ export class Settings {
     }
 
     saveFavorites(ids) {
-        localStorage.setItem("favorites", ids);
+        localStorage.setItem("favorites2", ids);
     }
 }

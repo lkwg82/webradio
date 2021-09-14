@@ -1,14 +1,10 @@
 export class InformationService {
     constructor() {
-        this.baseUrl = 'https://api-webradio.lgohlke.de/';
-        // this.baseUrl = 'http://localhost:8080/';
+//        this.baseUrl = 'https://api-webradio.lgohlke.de/';
+         this.baseUrl = 'http://localhost:8080/';
     }
 
     stationInfo(stationId) {
-        if (!Number.parseInt(stationId)) {
-            const err = new Error("invalid stationId:" + stationId);
-            throw err;
-        }
         const url = this.baseUrl + 'stationInfo?stationId=' + stationId;
         return fetch(url)
             .then(response => response.json())
@@ -17,14 +13,14 @@ export class InformationService {
                 return {
                     'logo': json['logo300x300'],
                     'name': json.name,
-                    'url': this.findFirstNonPlsEntryInStreamList(json.streamUrls)
+                    'url': this.findFirstNonPlsEntryInStreamList(json.streams)
                 };
             });
     }
 
     findFirstNonPlsEntryInStreamList(streamUrls) {
         return streamUrls
-            .map(e => e.streamUrl)
+            .map(e => e.url)
             .find(url => !url.endsWith(".pls"));
     }
 
@@ -38,25 +34,20 @@ export class InformationService {
             .then(response => response.json())
             .then(json => {
                 return json
-                    .filter(item => item.station.streamUrls.length > 0)
+                    .filter(item => item.streams.length > 0)
                     .map(item => {
                         console.debug(item);
                         return {
                             'id': item.id,
-                            'logo': item.station['logo300x300'],
-                            'name': item.station.name,
-                            'url': this.findFirstNonPlsEntryInStreamList(item.station.streamUrls)
+                            'logo': item['logo300x300'],
+                            'name': item.name,
+                            'url': this.findFirstNonPlsEntryInStreamList(item.streams)
                         };
                     });
             });
     }
 
     nowplaying(stationId){
-        if (!Number.parseInt(stationId)) {
-            const err = new Error("invalid stationId:" + stationId);
-            throw err;
-        }
-
         const url = this.baseUrl + 'nowPlaying?stationId=' + stationId;
         return fetch(url)
             .then(response => response.json())
