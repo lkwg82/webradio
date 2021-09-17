@@ -44,7 +44,7 @@ export class Favorites extends React.Component {
     componentDidMount() {
         const activeRadioId = this.settings.getActiveRadioId();
         if (activeRadioId) {
-            setPreviouslySelectedStation(activeRadioId)
+            this.setPreviouslySelectedStation(activeRadioId)
         }
 
         this.setState({
