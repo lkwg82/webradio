@@ -50,6 +50,11 @@ export class StationButton extends React.Component {
             });
     }
 
+    handleTouchStart(e) {
+        console.log("touch started");
+        console.log(e);
+    }
+
     render() {
         const { active, stationId, onClick } = this.props;
         const stationInfo = {
@@ -57,8 +62,11 @@ export class StationButton extends React.Component {
             name: this.state.name,
             url: this.state.url
         };
+        const handleTouchStart = this.handleTouchStart.bind(this);
+
         return (
             <RadioButton
+                onTouchStart={handleTouchStart}
                 logo={this.state.logo}
                 key={stationId}
                 block

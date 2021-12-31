@@ -5,7 +5,7 @@ import 'react-simple-keyboard/build/css/index.css';
 import InputGroup from 'react-bootstrap/InputGroup';
 import FormControl from 'react-bootstrap/FormControl';
 import Keyboard from 'react-simple-keyboard';
-import { StationButton } from '../radio-button/station-button';
+import { StationButton } from '../radio/station-button';
 import { InformationService } from '../../utils/information-service';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
