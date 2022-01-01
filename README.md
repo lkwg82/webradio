@@ -1,3 +1,5 @@
+[![build](https://github.com/lkwg82/webradio/actions/workflows/build.yml/badge.svg)](https://github.com/lkwg82/webradio/actions/workflows/build.yml)
+
 # development
 
 `yarn install`
