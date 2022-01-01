@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactPlayer from 'react-audio-player';
 import styled from 'styled-components';
-import {InformationService} from "../../utils/information-service";
+import { InformationService } from "../../utils/information-service";
 
 export const Status = styled.div`
   width: 100px;
@@ -19,11 +19,11 @@ export class AudioDeck extends React.Component {
     }
 
     render() {
-        const {name, url, id} = this.props.stationInfo;
+        const { name, url, id } = this.props.stationInfo;
 
         return (<div className="audioDeck">
             <div>
-                <NowPlaying stationId={id}/>
+                <NowPlaying stationId={id} />
                 <div>
                     <Status>{this.state.status}</Status>
                     <span>{name}</span>
@@ -34,13 +34,13 @@ export class AudioDeck extends React.Component {
                 autoPlay
                 onError={(e) => {
                     console.debug(e);
-                    this.setState({status: 'error'});
+                    this.setState({ status: 'error' });
                 }}
-                onCanPlay={() => this.setState({status: 'connecting'})}
-                onCanPlayThrough={() => this.setState({status: 'playing'})}
-                onAbort={() => this.setState({status: 'stopped'})}
-                onSeeked={() => this.setState({status: 'onSeeked'})}
-                onPause={() => this.setState({status: 'paused'})}/>
+                onCanPlay={() => this.setState({ status: 'connecting' })}
+                onCanPlayThrough={() => this.setState({ status: 'playing' })}
+                onAbort={() => this.setState({ status: 'stopped' })}
+                onSeeked={() => this.setState({ status: 'onSeeked' })}
+                onPause={() => this.setState({ status: 'paused' })} />
         </div>);
     }
 }
@@ -56,23 +56,25 @@ class NowPlaying extends React.Component {
     }
 
     componentDidMount() {
-        this.updateTitle(this.props.stationId)
-        this.setState({timer: setInterval(() => {
+        this.updateTitle(this.props.stationId);
+        this.setState({
+            timer: setInterval(() => {
                 this.updateTitle(this.props.stationId);
-            }, 3_000)})
+            }, 3000)
+        });
     }
     updateTitle(stationId) {
         this.informationService
             .nowplaying(stationId)
             .then(result => {
                 const title = result.title === "<emptyTitle>" ? '' : result.title;
-                this.setState({title: title})
-            })
+                this.setState({ title: title });
+            });
     }
 
     componentWillUnmount() {
-        console.log("clear timer")
-        clearInterval(this.state.timer)
+        console.log("clear timer");
+        clearInterval(this.state.timer);
     }
 
     render() {
