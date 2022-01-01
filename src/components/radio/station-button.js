@@ -36,6 +36,7 @@ export class StationButton extends React.Component {
             'name': '',
             'url': ''
         };
+        this.elementRef = React.createRef();
     }
 
     componentDidMount() {
@@ -45,14 +46,52 @@ export class StationButton extends React.Component {
                 this.setState({
                     logo: result.logo,
                     name: result.name,
+                    swipe: {
+                        start: 0,
+                        moved: 0
+                    },
                     url: result.url,
                 });
             });
+        // this.elementRef.addEventListener('mouseover', this.handleMouseOver);
     }
 
+    componentWillUnmount() {
+        // this.elementRef.removeEventListener('mouseover', this.handleMouseOver);
+    }
+
+    handleMouseOver() { alert('mouseover'); }
     handleTouchStart(e) {
-        console.log("touch started");
-        console.log(e);
+        this.setState({
+            swipe: {
+                start: e.touches[0].clientX,
+                moved: 0
+            }
+        });
+    }
+
+    handleTouchEnd() {
+        console.log(this.state.swipe);
+        if (this.state.swipe.moved > 150) /* left */ {
+            alert("left" + this.state.swipe.moved);
+        } else if (this.state.swipe.moved < -150) /* right */ {
+            alert("right" + this.state.swipe.moved);
+        }
+        this.setState({
+            swipe: {
+                start: 0,
+                moved: 0
+            }
+        });
+    }
+
+    handleTouchMove(e) {
+        this.setState({
+            swipe: {
+                start: this.state.swipe.start,
+                moved: this.state.swipe.start - e.touches[0].clientX
+            }
+        });
     }
 
     render() {
@@ -63,16 +102,25 @@ export class StationButton extends React.Component {
             url: this.state.url
         };
         const handleTouchStart = this.handleTouchStart.bind(this);
+        const handleTouchEnd = this.handleTouchEnd.bind(this);
+        const handleTouchMove = this.handleTouchMove.bind(this);
+        // const deleteVisible
 
         return (
-            <RadioButton
+            <RadioButton ref={this.elementRef}
                 onTouchStart={handleTouchStart}
+                onTouchEnd={handleTouchEnd}
+                onTouchMove={handleTouchMove}
                 logo={this.state.logo}
                 key={stationId}
                 block
                 variant={active ? 'primary' : 'secondary'}
                 onClick={() => onClick(stationInfo)}>
                 <StationName>{this.state.name}</StationName>
+
+                {/* <div >
+                    <h1>test</h1>
+                </div> */}
             </RadioButton>
         );
     }

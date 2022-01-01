@@ -21,7 +21,8 @@
         "react-scripts": "3.3.0",
         "react-simple-keyboard": "^2.1.47",
         "serialize-javascript": "^3.1.0",
-        "styled-components": "^4.4.1"
+        "styled-components": "^4.4.1",
+        "tailwindcss": "^3.0.8"
     },
     "scripts": {
         "start": "react-scripts start",
