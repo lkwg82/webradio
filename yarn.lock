@@ -6750,11 +6750,6 @@ nanomatch@^1.2.9:
     snapdragon "^0.8.1"
     to-regex "^3.0.1"
 
-natives@^1.1.6:
-  version "1.1.6"
-  resolved "https://registry.yarnpkg.com/natives/-/natives-1.1.6.tgz#a603b4a498ab77173612b9ea1acdec4d980f00bb"
-  integrity sha512-6+TDFewD4yxY14ptjKaS63GVdtKiES1pTPyxn9Jb0rBqPMZ7VcCiooEhPNsr+mqHtMGxa/5c/HhcC4uPEUw/nA==
-
 natural-compare@^1.4.0:
   version "1.4.0"
   resolved "https://registry.npmjs.org/natural-compare/-/natural-compare-1.4.0.tgz"
@@ -8566,10 +8561,10 @@ react-scripts@3.3.0:
   optionalDependencies:
     fsevents "2.1.2"
 
-react-simple-keyboard@^2.1.47:
-  version "2.1.47"
-  resolved "https://registry.npmjs.org/react-simple-keyboard/-/react-simple-keyboard-2.1.47.tgz"
-  integrity sha512-smfL15klWUvRdb3lMlt8BI1S0JwhMEBH7cKKTldOpT+jT3Qu4rABXQNcrxb1WPtWdmY6hxdAgKjl7dofyb5C1w==
+react-simple-keyboard@^2.2.19:
+  version "2.2.19"
+  resolved "https://registry.yarnpkg.com/react-simple-keyboard/-/react-simple-keyboard-2.2.19.tgz#af2e0dcc21853e490279bff7e3a27d0429b63a8a"
+  integrity sha512-lvou0K/rsZt8RwmyFStsn56fk+/qcaHS+avY2C23A5D1WRpWyLEY8LW5PcB1Wzkh40sC/IGfEnwRm+PIjnOyrQ==
 
 react-transition-group@^4.0.0:
   version "4.3.0"
@@ -9806,13 +9801,6 @@ svgo@^1.0.0, svgo@^1.2.2:
     stable "^0.1.8"
     unquote "~1.1.1"
     util.promisify "~1.0.0"
-
-swiped-events@^1.1.6:
-  version "1.1.6"
-  resolved "https://registry.yarnpkg.com/swiped-events/-/swiped-events-1.1.6.tgz#bdef8bf090291603f429435ce5db25b20cbd04ab"
-  integrity sha512-X0d1FbXes9j4AckSN/k2x6WW2KSTmtEFIjUjThVy8lKrB4Orf89xFPMNbAj2vTZE3Wo2+yaNl6hZoXH9DhC4vg==
-  dependencies:
-    natives "^1.1.6"
 
 symbol-tree@^3.2.2:
   version "3.2.4"
