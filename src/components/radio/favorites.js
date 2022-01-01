@@ -27,24 +27,24 @@ export class Favorites extends React.Component {
             showSearch: false,
         };
     }
-    
-    setPreviouslySelectedStation(station){
+
+    setPreviouslySelectedStation(station) {
         this.informationService
-                    .stationInfo(station)
-                    .then(result => {
-                        const stationInfo = {
-                            name: result.name,
-                            url: result.url,
-                            id: station
-                        };
-                        this.handleClick(stationInfo);
-                    });
+            .stationInfo(station)
+            .then(result => {
+                const stationInfo = {
+                    name: result.name,
+                    url: result.url,
+                    id: station
+                };
+                this.handleClick(stationInfo);
+            });
     }
-    
+
     componentDidMount() {
         const activeRadioId = this.settings.getActiveRadioId();
         if (activeRadioId) {
-            this.setPreviouslySelectedStation(activeRadioId)
+            this.setPreviouslySelectedStation(activeRadioId);
         }
 
         this.setState({
