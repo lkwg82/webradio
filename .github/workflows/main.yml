@@ -5,7 +5,7 @@ on:
 #      - master
 jobs:
   build:
-    uses: ./.github/workflows/build.yml@master
+    uses: lkwg82/webradio/.github/workflows/build.yml@master
   deploy:
     runs-on: ubuntu-latest
     steps:
