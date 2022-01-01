@@ -1,4 +1,4 @@
-name: package site
+name: build
 on: [ push ]
 jobs:
   build:
