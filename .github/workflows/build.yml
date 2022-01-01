@@ -24,7 +24,7 @@ jobs:
         run: yarn install
       - name: build production
         run: yarn build
-      - name: build
+      - name: upload build
         uses: actions/upload-artifact@v2
         with:
           name: build
