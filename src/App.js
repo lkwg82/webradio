@@ -1,6 +1,6 @@
 import React from 'react';
 import './App.css';
-import Player from './components/radio-button/player.js';
+import Player from './components/radio/player.js';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 function App() {
