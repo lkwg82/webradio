@@ -1,16 +1,16 @@
-import React, {Fragment} from 'react';
-import {OfflineHint} from './offline-hint';
-import {Favorites} from './favorites';
-import {OfflineReconnector} from './offline-reconnector';
-import {AudioDeck} from './AudioDeck';
+import React, { Fragment } from 'react';
+import { OfflineHint } from './offline-hint';
+import { Favorites } from './favorites';
+import { OfflineReconnector } from './offline-reconnector';
+import { AudioDeck } from './AudioDeck';
 import styled from 'styled-components';
 import Button from 'react-bootstrap/Button';
 
-import {SpotifyPanel} from './SpotifyPanel';
-import {SpotifyWebsocket} from './SpotifyWebsocket';
-import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
-import {faBroadcastTower} from '@fortawesome/free-solid-svg-icons';
-import {faSpotify} from '@fortawesome/free-brands-svg-icons';
+import { SpotifyPanel } from './SpotifyPanel';
+import { SpotifyWebsocket } from './SpotifyWebsocket';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faBroadcastTower } from '@fortawesome/free-solid-svg-icons';
+import { faSpotify } from '@fortawesome/free-brands-svg-icons';
 
 export const ModeButton = styled(Button)`
   border-radius: 50% !important;
@@ -29,16 +29,16 @@ class SpotifyPlayDetector extends React.Component {
         super(props);
         this.state = {
             websocket: null
-        }
+        };
     }
 
     componentDidMount() {
-        const timer = setInterval(() => this.initConnection(), 1000)
-        this.setState({timer: timer})
+        const timer = setInterval(() => this.initConnection(), 1000);
+        this.setState({ timer: timer });
     }
 
     componentWillUnmount() {
-        clearInterval(this.state.timer)
+        clearInterval(this.state.timer);
     }
 
     render() {
@@ -47,18 +47,18 @@ class SpotifyPlayDetector extends React.Component {
 
     initConnection() {
         if (this.state.websocket !== null) {
-            console.debug("websocket connected")
-            return
+            console.debug("websocket connected");
+            return;
         }
         const ws = new SpotifyWebsocket();
-        this.setState({websocket: ws})
+        this.setState({ websocket: ws });
         ws.onclose = () => {
-            console.debug("ws closed")
-            this.setState({websocket: null})
+            console.debug("ws closed");
+            this.setState({ websocket: null });
         };
         ws.onerror = () => {
-            console.debug("ws errored")
-            this.setState({websocket: null})
+            console.debug("ws errored");
+            this.setState({ websocket: null });
         };
         ws.onPlaybackResumed = () => {
             console.log("need to switch");
@@ -73,7 +73,7 @@ class Player extends React.Component {
         this.offlineReconnector = new OfflineReconnector();
         this.state = {
             streamUrl: '',
-            stationInfo: {name: '', id: -1, url: ''},
+            stationInfo: { name: '', id: -1, url: '' },
             showSpotify: false,
         };
     }
@@ -85,25 +85,25 @@ class Player extends React.Component {
         return (
             <div className="all-container">
                 {this.state.showSpotify ?
-                    <SpotifyPanel/>
+                    <SpotifyPanel />
                     :
                     <Fragment>
-                        <Favorites playRadioStream={playRadioStream}/>
-                        <AudioDeck stationInfo={this.state.stationInfo}/>
+                        <Favorites playRadioStream={playRadioStream} />
+                        <AudioDeck stationInfo={this.state.stationInfo} />
                     </Fragment>
                 }
-                <OfflineHint/>
+                <OfflineHint />
                 <SpotifyPlayDetector showSpotify={() => {
-                    this.setState({showSpotify: true});
-                }}/>
+                    this.setState({ showSpotify: true });
+                }} />
                 {
                     this.state.showSpotify ?
                         <ModeButton size="lg" onClick={toggle}>
-                            <FontAwesomeIcon icon={faBroadcastTower}/>
+                            <FontAwesomeIcon icon={faBroadcastTower} />
                         </ModeButton>
                         :
                         <ModeButton size="lg" onClick={toggle}>
-                            <FontAwesomeIcon icon={faSpotify}/>
+                            <FontAwesomeIcon icon={faSpotify} />
                         </ModeButton>
                 }
             </div>
@@ -112,11 +112,11 @@ class Player extends React.Component {
 
     playRadioStream(stationInfo) {
         console.debug("play " + JSON.stringify(stationInfo));
-        this.setState({stationInfo: stationInfo});
+        this.setState({ stationInfo: stationInfo });
     }
 
     toggle() {
-        this.setState({showSpotify: !this.state.showSpotify});
+        this.setState({ showSpotify: !this.state.showSpotify });
     }
 }
 
