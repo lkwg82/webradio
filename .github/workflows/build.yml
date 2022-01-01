@@ -35,6 +35,10 @@ jobs:
     needs: build
     #if: github.ref == 'refs/heads/master'
     steps:
+      - name: Download a single artifact
+        uses: actions/download-artifact@v2
+        with:
+          name: release
       - name: Deploy
         uses: crazy-max/ghaction-github-pages@v1
         with:
