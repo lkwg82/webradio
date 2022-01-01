@@ -20,7 +20,7 @@
         "react-hot-loader": "^4.12.18",
         "react-scripts": "5.0.0",
         "react-simple-keyboard": "^3.4.26",
-        "serialize-javascript": "^3.1.0",
+        "serialize-javascript": "^6.0.0",
         "styled-components": "^4.4.1"
     },
     "scripts": {
