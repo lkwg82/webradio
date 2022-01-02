@@ -1,4 +1,5 @@
 [![build](https://github.com/lkwg82/webradio/actions/workflows/build.yml/badge.svg)](https://github.com/lkwg82/webradio/actions/workflows/build.yml)
+![GitHub last commit (branch)](https://img.shields.io/github/last-commit/lkwg82/webradio/gh-pages?label=last%20deployment)
 
 # development
 
