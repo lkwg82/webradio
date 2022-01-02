@@ -69,7 +69,6 @@ export class StationButton extends React.Component {
                 onTouchStart={handleTouchStart}
                 logo={this.state.logo}
                 key={stationId}
-                block
                 variant={active ? 'primary' : 'secondary'}
                 onClick={() => onClick(stationInfo)}>
                 <StationName>{this.state.name}</StationName>
