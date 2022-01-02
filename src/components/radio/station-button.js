@@ -1,6 +1,7 @@
 
 import React from 'react';
 import Button from 'react-bootstrap/Button';
+import StationRemovalModal from './station-removal-modal.js';
 import styled from 'styled-components';
 import { InformationService } from '../../utils/information-service';
 
@@ -32,6 +33,7 @@ export class StationButton extends React.Component {
         super(props);
         this.informationService = new InformationService();
         this.state = {
+            'removeStation': false,
             'logo': '',
             'name': '',
             'url': ''
@@ -51,27 +53,67 @@ export class StationButton extends React.Component {
     }
 
     handleTouchStart(e) {
-        console.log("touch started");
-        console.log(e);
+        this.setState({
+            swipe: {
+                start: e.touches[0].clientX,
+                moved: 0
+            }
+        });
+    }
+
+    handleTouchMove(e) {
+        this.setState({
+            swipe: {
+                start: this.state.swipe.start,
+                moved: this.state.swipe.start - e.touches[0].clientX
+            }
+        });
+    }
+
+    handleTouchEnd() {
+        if (this.state.swipe.moved > 150) /* left */ {
+            this.setState({ removeStation: true });
+        } else if (this.state.swipe.moved < -150) /* right */ {
+            this.setState({ removeStation: false });
+        }
+        this.setState({
+            swipe: {
+                start: 0,
+                moved: 0
+            }
+        });
     }
 
     render() {
-        const { active, stationId, onClick } = this.props;
+        const { active, stationId, onClick, removeStation } = this.props;
         const stationInfo = {
             id: stationId,
             name: this.state.name,
             url: this.state.url
         };
         const handleTouchStart = this.handleTouchStart.bind(this);
+        const handleTouchEnd = this.handleTouchEnd.bind(this);
+        const handleTouchMove = this.handleTouchMove.bind(this);
 
         return (
             <RadioButton
-                onTouchStart={handleTouchStart}
+                onTouchStart={handleTouchStart} onTouchMove={handleTouchMove} onTouchEnd={handleTouchEnd}
                 logo={this.state.logo}
                 key={stationId}
                 variant={active ? 'primary' : 'secondary'}
                 onClick={() => onClick(stationInfo)}>
                 <StationName>{this.state.name}</StationName>
+
+                <StationRemovalModal
+                    show={this.state.removeStation}
+                    name={stationInfo.name}
+                    cancel={() => this.setState({ removeStation: false })}
+                    remove={() => {
+                        removeStation();
+                        this.cancelRemoval();
+                    }
+                    }
+                />
             </RadioButton>
         );
     }
