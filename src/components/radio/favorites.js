@@ -69,8 +69,14 @@ export class Favorites extends React.Component {
         this.setState({ favorites: newFavorites });
     }
 
+    removeStation(id) {
+        this.settings.removeFavorite(id);
+        const newFavorites = this.settings.getFavorites();
+        this.setState({ favorites: newFavorites });
+    }
+
     render() {
-        const handler = this.handleClick.bind(this);
+        const handleClick = this.handleClick.bind(this);
         const toggleSearch = () => this.setState({ showSearch: !this.state.showSearch });
         const addStation = this.addStation.bind(this);
 
@@ -82,7 +88,9 @@ export class Favorites extends React.Component {
                             key={id}
                             stationId={id}
                             active={id === this.state.activeRadioId}
-                            onClick={handler} />
+                            onClick={handleClick}
+                            removeStation={() => this.removeStation(id)}
+                        />
                     ))}
                 </Grid>
                 {

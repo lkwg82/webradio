@@ -21,6 +21,11 @@ export class Settings {
         this.saveFavorites(newFavorites);
     }
 
+    removeFavorite(stationId) {
+        const reducedFavorites = this.getFavorites().filter(i => i != stationId);
+        this.saveFavorites(reducedFavorites);
+    }
+
     saveFavorites(ids) {
         localStorage.setItem("favorites2", ids);
     }

@@ -1,7 +1,7 @@
 
 import React from 'react';
 import Button from 'react-bootstrap/Button';
-// import Modal from 'react-bootstrap/Modal';
+import StationRemovalModal from './station-removal-modal.js';
 import styled from 'styled-components';
 import { InformationService } from '../../utils/information-service';
 
@@ -85,7 +85,7 @@ export class StationButton extends React.Component {
     }
 
     render() {
-        const { active, stationId, onClick } = this.props;
+        const { active, stationId, onClick, removeStation } = this.props;
         const stationInfo = {
             id: stationId,
             name: this.state.name,
@@ -100,29 +100,20 @@ export class StationButton extends React.Component {
                 onTouchStart={handleTouchStart} onTouchMove={handleTouchMove} onTouchEnd={handleTouchEnd}
                 logo={this.state.logo}
                 key={stationId}
-                block
                 variant={active ? 'primary' : 'secondary'}
                 onClick={() => onClick(stationInfo)}>
                 <StationName>{this.state.name}</StationName>
 
-                {
-                    this.state.removeStation ?
-                        // <Modal size="lg" centered>
-                        <p>{this.state.name} entfernen?</p>
-                        //     <Modal.Header closeButton>
-                        //         <Modal.Title id="contained-modal-title-vcenter">
-                        //             Modal heading
-                        //         </Modal.Title>
-                        //     </Modal.Header>
-                        //     <Modal.Footer>
-                        //         <Button variant="secondary" onClick={() => this.setState({ 'removeStation': false })}>Close</Button>
-
-                        //         <Button variant="primary">Save changes</Button>
-                        //     </Modal.Footer>
-                        // </Modal>
-                        :
-                        <div className='hidden' />
-                }
+                <StationRemovalModal
+                    show={this.state.removeStation}
+                    name={stationInfo.name}
+                    cancel={() => this.setState({ removeStation: false })}
+                    remove={() => {
+                        removeStation();
+                        this.cancelRemoval();
+                    }
+                    }
+                />
             </RadioButton>
         );
     }
