@@ -45,3 +45,7 @@
 .spotify button{
     font-size: 3rem;
 }
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
