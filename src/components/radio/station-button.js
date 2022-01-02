@@ -97,13 +97,32 @@ export class StationButton extends React.Component {
 
         return (
             <RadioButton
-                // onTouchStart={handleTouchStart} onTouchMove={handleTouchMove} onTouchEnd={handleTouchEnd}
+                onTouchStart={handleTouchStart} onTouchMove={handleTouchMove} onTouchEnd={handleTouchEnd}
                 logo={this.state.logo}
                 key={stationId}
                 block
                 variant={active ? 'primary' : 'secondary'}
                 onClick={() => onClick(stationInfo)}>
                 <StationName>{this.state.name}</StationName>
+
+                {
+                    this.state.removeStation ?
+                        // <Modal size="lg" centered>
+                        <p>{this.state.name} entfernen?</p>
+                        //     <Modal.Header closeButton>
+                        //         <Modal.Title id="contained-modal-title-vcenter">
+                        //             Modal heading
+                        //         </Modal.Title>
+                        //     </Modal.Header>
+                        //     <Modal.Footer>
+                        //         <Button variant="secondary" onClick={() => this.setState({ 'removeStation': false })}>Close</Button>
+
+                        //         <Button variant="primary">Save changes</Button>
+                        //     </Modal.Footer>
+                        // </Modal>
+                        :
+                        <div className='hidden' />
+                }
             </RadioButton>
         );
     }
