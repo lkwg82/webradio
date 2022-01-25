@@ -7401,10 +7401,10 @@ react-scripts@5.0.0:
   optionalDependencies:
     fsevents "^2.3.2"
 
-react-simple-keyboard@^3.4.33:
-  version "3.4.33"
-  resolved "https://registry.yarnpkg.com/react-simple-keyboard/-/react-simple-keyboard-3.4.33.tgz#8ae5dd2a61090b27a2c5458fff099cb131c63e17"
-  integrity sha512-PY2/fCK7p1BUV5X+njowUaVGsBX6xpS/6i8peOYg1v2MmjUPgBWLWOsKz2bNg9c15UGfwGlCBOVRqtwjQllL9Q==
+react-simple-keyboard@^3.4.48:
+  version "3.4.48"
+  resolved "https://registry.yarnpkg.com/react-simple-keyboard/-/react-simple-keyboard-3.4.48.tgz#dbf247c5e296d35a3f78f4f5b50d618e63f446f3"
+  integrity sha512-C5HleMIOaG798fmym4qoA6HLWMdVDnyEDWMHsAsbV2myY2AppJxPpEqmkNq425AtCKL8qzfRmme2SGkXkhr+LA==
 
 react-transition-group@^4.4.1:
   version "4.4.2"
