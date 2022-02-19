@@ -1,0 +1,13 @@
+{
+  "files": {
+    "main.css": "/webradio/static/css/main.7d0c5c83.css",
+    "main.js": "/webradio/static/js/main.cf446b99.js",
+    "index.html": "/webradio/index.html",
+    "main.7d0c5c83.css.map": "/webradio/static/css/main.7d0c5c83.css.map",
+    "main.cf446b99.js.map": "/webradio/static/js/main.cf446b99.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.7d0c5c83.css",
+    "static/js/main.cf446b99.js"
+  ]
+}
